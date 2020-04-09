@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+    JobBoard - Employers
+{% endblock title %}
+
+
+{% block stylesheet %}
+{% endblock stylesheet %}
+
+{% block content %}
+<div class="dez-bnr-inr dez-bnr-inr-md">
+    <div class="container">
+
+            <div class="find-job-bx mt-5">
+                <div>
+
+                   {% if not object_list %}
+                        <h5>There is no Employers registered with us </h5>
+                    {% else %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <ul class="post-job-bx">
+                                        {% for employer in object_list %}
+                                            <li>
+                                                <a href="#">
+                                                    <div class="d-flex m-b30">
+                                                        <div class="job-post-company">
+                                                            <span><img src="{% static 'images/job-icon.webp' %}"/></span>
+                                                        </div>
+                                                        <div class="job-post-info">
+                                                            <h4>{{ employer.name }}</h4>
+                                                            <ul>
+                                                                <li class="text-capitalize"><i class="fa fa-map-marker"></i> {{ employer.location }} </li>
+                                                                <!-- <li class="text-capitalize"><i class="fa fa-bookmark-o"></i> {{ job.working_time }} </li>
+                                                                <li class="text-capitalize"><i class="fa fa-clock-o"></i> {{ job.posted_date|date:"F d, Y" }} </li> -->
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex">
+                                                        <div class="job-time mr-auto">
+                                                            <span> Time <span>
+                                                        </div>
+                                                        <div class="salary-bx">
+                                                            <span> salary </span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <span class="post-like fa fa-heart-o"></span> -->
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>    
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    
+                </div>
+
+            </div>
+
+    </div>
+</div>
+{% endblock content %}
+
+
+
+{% block scripts %}
+{% endblock scripts %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+    JobBoard - Post new Job
+{% endblock title %}
+
+
+{% block stylesheet %}
+{% endblock stylesheet %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button>Create</button>
+    </form>
+{% endblock content %}
+
+
+{% block scripts %}
+{% endblock scripts %}
