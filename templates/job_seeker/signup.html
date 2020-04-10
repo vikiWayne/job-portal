@@ -35,7 +35,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h3 class="font-weight-700 m-t0 m-b20">Create An Account</h3>
+                    <h3 class="font-weight-700 m-t0 m-b20">Create An Employee Account</h3>
+                    <div>
+                        <h6 style="font-weight: 100;">If you are looking for a Employer account <span> <a  style="color: #2b53e2;" href="{% url 'employer-register' %}"> Sign Up</a></span> here </h6>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -47,7 +50,7 @@
                             <form id="login" class="tab-pane active" method="POST">
                                 {% csrf_token %}
 
-                                <h4 class="font-weight-700">PERSONAL INFORMATION</h4>
+                                <h4 class="font-weight-700">EMPLOYEE INFORMATION</h4>
                                 <p class="font-weight-600">If you have an account with us, please log in.</p>
                                 <div class="form-group">
                                     <label class="font-weight-700">First Name</label>
@@ -86,8 +89,11 @@
                                         {{ form.password2.errors }}
                                     </div>
                                 </div>
-                                <div class="text-left">
-                                    <button class="site-button button-lg outline outline-2">CREATE</button>
+                                <div class="m-2 text-center">
+                                    <small>By clicking create you are agreeing to the <a href="#" id="terms"><span class="text-info">Terms and Conditions</span></a> </small>
+                                </div>
+                                <div class="text-center">
+                                    <button class="site-button button-lg outline outline-2" style="width: 70%;">CREATE</button>
                                 </div>
                             </form>
                         </div>

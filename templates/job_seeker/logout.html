@@ -6,12 +6,50 @@
 
 
 {% block stylesheet %}
+    <style>
+        .logout{
+            width: 100%;
+            margin-top: 10%;
+            margin-bottom: 10%;
+            text-align: center;
+        }
+        .logout h1 {
+            font-size: 52px;
+            text-transform: capitalize;
+        }
+        .logout div h4 {
+            font-weight: 100;
+        }
+        small{
+            font-size: 15px;
+            color: #17a2b8;
+        }
+    </style>
 {% endblock stylesheet %}
 
+
+
+
 {% block content %}
-    <h2>You have been logged out</h2>
+
+  <div class="logout">
+    <h1>you have been logged out</h1>
+    <div>
+        <h4>Thank you for using our service</h4>
+    </div>
+    <div>
+        <small>Redirecting back to Home</small>
+    </div>
+  </div>
 {% endblock content %}
 
 
 {% block scripts %}
+<script>
+    function redirect(){
+       window.location.href = "/";
+    }
+
+    setTimeout(redirect, 1000); 
+</script>
 {% endblock scripts %}

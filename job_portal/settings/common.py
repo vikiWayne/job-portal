@@ -30,9 +30,9 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
-AUTH_USER_MODEL = 'job_seeker.JobSeeker'
+AUTH_USER_MODEL = 'job_seeker.User'
 
-MIDDLEWARE = [
+MIDDLEWARE  = (
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -41,7 +41,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-]
+)
 
 
 ROOT_URLCONF = 'job_portal.urls'

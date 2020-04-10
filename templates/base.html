@@ -62,12 +62,11 @@
                         <div class="extra-cell">
                             {% if user.is_authenticated %}
                                <a href="{% url 'profile' %}">  {{ user.email }} </a>
-                                <a href="{% url 'logout' %}" class="site-button"><i class="fa fa-lock"></i> logout</a>
+                                <a href="{% url 'logout' %}" class="site-button" style="background: #d01e3a !important;"> <i class="fa fa-lock"></i> logout</a>
                             {% else %}
                                 <a href="{% url 'register' %}" class="site-button"><i class="fa fa-user"></i> Sign Up</a>
                                 <a href="{% url 'login' %}" class="site-button"><i class="fa fa-lock"></i> login</a>
-                            {% endif %}
-                            
+                            {% endif %}                            
                         </div>
                     </div>
                     <!-- Quik search -->
@@ -88,7 +87,7 @@
 								<a href="#">Career <i class="fa fa-chevron-down"></i></a>
 								<ul class="sub-menu">
 									<li><a href="{% url 'jobs' %}" class="dez-page">Browse Job</a></li>
-									<li><a href="{% url 'employers' %}" class="dez-page">companies</a></li>
+									<li><a href="{% url 'employers' %}" class="dez-page">employers</a></li>
 								</ul>
                             </li>
                             

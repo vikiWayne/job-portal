@@ -1,16 +1,16 @@
 from django.forms import ModelForm
 from django import forms
-from job_seeker.models import JobSeeker
+from job_seeker.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 
 class SignUpForm(UserCreationForm):
     class Meta:
-        model = JobSeeker
+        model = User
         fields = ['first_name','last_name','email','phone']
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
-         model = JobSeeker
+         model = User
          fields = ['email']
 
 class CustomAuthenticationForm(AuthenticationForm):

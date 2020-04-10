@@ -1,19 +1,16 @@
 from django.db import models
 from django.utils import timezone
-from PIL import Image
-# Create your models here.
+
 
 class Employer(models.Model):
-    name = models.CharField(max_length=50)
+    user = models.OneToOneField('job_seeker.User', on_delete=models.CASCADE, related_name='employer')
     description = models.TextField(help_text='A Detailed Description about Employer')
     location = models.CharField(max_length=150, help_text='Employer location')
-    email = models.EmailField(unique=True, error_messages={'required': 'Please provide email','unique':'This email address is taken'})
-    phone = models.CharField(max_length=12, unique=True, help_text='Contact number')
     address = models.TextField(help_text='Detaild address', null=True, blank=True)
-    about = models.TextField(help_text='About Employer', null=True, blank=True)
 
     def __str__(self):
-        return f'{ self.name }'
+        return f'{ self.user } - Employer'
+        # return f'{ self.user.email } - Employer'
 
 
 JOB_TYPE = (
@@ -34,4 +31,4 @@ class Jobs(models.Model):
     posted_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{ self.title } '
+        return f'{ self.title }'

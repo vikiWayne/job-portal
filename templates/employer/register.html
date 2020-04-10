@@ -1,5 +1,116 @@
+
+
+
 {% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+    JobBoard - Sign Up
+{% endblock title %}
+
+
+{% block stylesheet %}
+{% endblock stylesheet %}
 
 {% block content %}
-    <h3>Register Companies Here</h3>
+
+<div class="page-content bg-white">
+    <!-- inner page banner -->
+    <div class="dez-bnr-inr overlay-black-middle bg-pt" style="background-image:url({% static 'images/banner/bnr2.jpg' %});">
+        <div class="container">
+            <div class="dez-bnr-inr-entry">
+                <h1 class="text-white">Register</h1>
+                <!-- Breadcrumb row -->
+                <div class="breadcrumb-row">
+                    <ul class="list-inline">
+                        <li><a href="#">Home</a></li>
+                        <li>Register</li>
+                    </ul>
+                </div>
+                <!-- Breadcrumb row END -->
+            </div>
+        </div>
+    </div>
+    <!-- inner page banner END -->
+    <!-- contact area -->
+    <div class="section-full content-inner shop-account">
+        <!-- Product -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h3 class="font-weight-700 m-t0 m-b20">Create An Employer Account</h3>
+                    <div>
+                        <h6 style="font-weight: 100;">If you are looking for a Employee account <span> <a  style="color: #2b53e2;" href="{% url 'register' %}"> Sign Up</a></span> here </h6>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 m-b30">
+                    <div class="p-a30 border-1  max-w500 m-auto">
+                        <div class="tab-content">
+                            
+                            {{ form.non_field_errors }}
+                            <form id="login" class="tab-pane active" method="POST">
+                                {% csrf_token %}
+
+                                <h4 class="font-weight-700">EMPLOYER INFORMATION</h4>
+                                <p class="font-weight-600">If you have an account with us, please log in.</p>
+                                <div class="form-group">
+                                    <label class="font-weight-700"> Name</label>
+                                    {{ form.first_name|attr:'class:form-control'|attr:'placeholder: Name' }}
+                                    <div>
+                                        {{ form.first_name.errors }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-700">PHONE *</label>
+                                    {{ form.phone|attr:'class:form-control'|attr:'placeholder:Your Mobile Number' }}
+                                    <div>
+                                        {{ form.phone.errors }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-700">E-MAIL *</label>
+                                    {{ form.email|attr:'class:form-control'|attr:'placeholder:Your Email Id' }}
+                                    <div>
+                                        {{ form.email.errors }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-700">PASSWORD *</label>
+									{{ form.password1|attr:'class:form-control'|attr:'placeholder:Type Password' }}
+                                    {{ form.password2|attr:'class:form-control'|attr:'placeholder:Confirm Password' }}
+                                    <div>
+                                        {{ form.password1.errors }}
+                                        {{ form.password2.errors }}
+                                    </div>
+                                </div>
+                                <div class="m-2 text-center">
+                                    <small>By clicking create you are agreeing to the <a href="#" id="terms"><span class="text-info">Terms and Conditions</span></a> </small>
+                                </div>
+                                <div class="text-center mt-1">
+                                    <button class="site-button button-lg outline outline-2" style="width: 70%;">CREATE</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Product END -->
+    </div>
+    <!-- contact area  END -->
+</div>
+
 {% endblock content %}
+
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        $('#terms').click(function(e){
+            e.preventDefault()
+        })
+    })
+</script>
+{% endblock scripts %}

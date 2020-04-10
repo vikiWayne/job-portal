@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
+
 from employer.models import Jobs
 from job_seeker.forms import SignUpForm
 from job_seeker.models import JobApplication

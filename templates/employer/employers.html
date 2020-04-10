@@ -18,12 +18,14 @@
 
                    {% if not object_list %}
                         <h5>There is no Employers registered with us </h5>
+                        {{ object_list }}
                     {% else %}
                         <div class="container">
                             <div class="row">
                                 <div class="col-lg-9">
                                     <ul class="post-job-bx">
                                         {% for employer in object_list %}
+                                            {% if not employer.user.is_superuser %}
                                             <li>
                                                 <a href="#">
                                                     <div class="d-flex m-b30">
@@ -31,7 +33,7 @@
                                                             <span><img src="{% static 'images/job-icon.webp' %}"/></span>
                                                         </div>
                                                         <div class="job-post-info">
-                                                            <h4>{{ employer.name }}</h4>
+                                                            <h4>{{ employer.user.first_name }}</h4>
                                                             <ul>
                                                                 <li class="text-capitalize"><i class="fa fa-map-marker"></i> {{ employer.location }} </li>
                                                                 <!-- <li class="text-capitalize"><i class="fa fa-bookmark-o"></i> {{ job.working_time }} </li>
@@ -50,12 +52,15 @@
                                                     <!-- <span class="post-like fa fa-heart-o"></span> -->
                                                 </a>
                                             </li>
+                                            {% endif %}
                                         {% endfor %}
+
                                     </ul>
                                 </div>    
                             </div>
                         </div>
                     {% endif %}
+
 
                     
                 </div>
