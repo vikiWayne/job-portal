@@ -1,18 +1,141 @@
-{% extends 'base.html' %}
 {% load static %}
-{% load widget_tweaks %}
-{% block title %}
-    JobBoard - My Profile
-{% endblock title %}
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>JobBoard - {{ user.email }}</title>
+	<meta name="description" content="Bako - Personal Portfolio & Resume HTML Template">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
+
+	<!-- STYLESHEETS -->
+	<link rel="stylesheet" href="{% static 'css/profile/bootstrap.min.css' %}" type="text/css" media="all">
+	<link rel="stylesheet" href="{% static 'css/profile/all.min.css' %}" type="text/css" media="all">
+	<link rel="stylesheet" href="{% static 'css/profile/simple-line-icons.css' %}" type="text/css" media="all">
+	<link rel="stylesheet" href="{% static 'css/profile/slick.css' %}" type="text/css" media="all">
+	<link rel="stylesheet" href="{% static 'css/profile/jquery.mCustomScrollbar.min.css' %}" type="text/css" media="all">
+	<link rel="stylesheet" href="{% static 'css/profile/style.css' %}" type="text/css" media="all">
+
+	<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        img {
+            border-radius: 50%;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- preloader -->
+<div id="preloader">
+	<div class="outer">
+		<div class="spinner">
+			<div class="dot1"></div>
+			<div class="dot2"></div>
+		</div>
+	</div>
+</div>
+
+<!-- site wrapper -->
+<div class="site-wrapper">
+
+	<!-- mobile header -->
+	<div class="mobile-header py-2 px-3 mt-4">
+		<button class="menu-icon mr-2">
+			<span></span>
+			<span></span>
+			<span></span>
+		</button>
+		<a href="#" class="logo"><img src=" {{ user.jobseeker.profile_picture.url }} " alt="{{ user.first_name }}" /></a>
+		<a href="#" class="site-title dot ml-2 text-capitalize">{{ user.first_name }} {{ user.last_name }} </a>
+	</div>
+
+	<!-- header -->
+	<header class="left float-left shadow-dark" id="header">
+		<button type="button" class="close" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<div class="header-inner d-flex align-items-start flex-column">
+			<a href="#"><img src="{{ user.jobseeker.profile_picture.url }}" alt="{{ user.first_name }}" height="70px" width="70px" /></a>
+			<a href="#" class="site-title dot mt-3 text-capitalize">{{ user.first_name }} {{ user.last_name }}</a>
+			<span class="site-slogan"> {{ user.profession }} </span>
+			
+			<!-- navigation menu -->
+			<nav>
+				<ul class="vertical-menu scrollspy">
+
+					<li><a href="#about"><i class="fa fa-user"></i>About</a></li>
+
+				</ul>
+			</nav>
+			
+			<!-- footer -->
+
+		</div>
+	</header>
+
+	<!-- main content area -->
+	<main class="content float-right">
 
 
-{% block stylesheet %}
-{% endblock stylesheet %}
+		<!-- section about -->
+		<section id="about" class="shadow-blue white-bg padding" style="margin-top: 0 !important;">
+			<h3 class="section-title text-capitalize">About <span style="color: #4A63E7;font-size: 38px;">{{ user.first_name }} {{ user.last_name }}</span> </h3>
+			<div class="spacer" data-height="80"></div>
 
-{% block content %}
-{{ user.email }}
-{% endblock content %}
+			<div class="row">
+				<div class="col-md-3">
+					<img src="{{ user.jobseeker.profile_picture.url }}" alt="profile pic" />
+				</div>
+				<div class="col-md-9">
+					<h2 class="mt-4 mt-md-0 mb-4">Hello,</h2>
+					<p class="mb-0"> {{ user.about }} </p>
+					<div class="row my-4">
+						<div class="col-md-6">
+							<p class="mb-2">Name: <span class="text-dark text-capitalize">{{ user.first_name }} {{ user.last_name }}</span></p>
+							<p class="mb-0">Birthday: <span class="text-dark"> {% if not user.dob %} Not mentioned {% else %} {{ user.dob }} {% endif %} </span></p>
+						</div>
+						<div class="col-md-6 mt-2 mt-md-0 mt-sm-2">
+							<p class="mb-2">Location: <span class="text-dark"> {% if user.jobseeker.address.city or  user.jobseeker.address.district or user.jobseeker.address.state %} {{ user.jobseeker.address.city }}, {{ user.jobseeker.address.district }} - {{ user.jobseeker.address.state }} {% else %} Not mentioned {% endif %} </span></p>
+							<p class="mb-0">Email: <span class="text-dark"> <a href="mailto:"> {{ user.email }} </a> </span></p>
+							<p class="mb-0">Contact: <span class="text-dark"> <a href="tel:"> {{ user.phone }} </a>  </span></p>
+						</div>
+					</div>
+					<a href="#" class="btn btn-default mr-3"><i class="fa fa-file-download"> </i> Download CV</a>
+					<a href="{% url 'home' %}" class="btn btn-default mr-3"> <i class="fa fa-arrow-left"> </i> Back to home</a>
 
+				</div>
+			</div>
+		</section>
 
-{% block scripts %}
-{% endblock scripts %}
+	</main>
+
+</div>
+
+<!-- Go to top button -->
+<a href="javascript:" id="return-to-top"><i class="fa fa-chevron-up"></i></a>
+
+<!-- SCRIPTS -->
+<script src="{% static 'js/profile/jquery-1.12.3.min.js' %}"></script>
+<script src="{% static 'js/profile/jquery.easing.min.js' %}"></script>
+<script src="{% static 'js/profile/popper.min.js' %}"></script>
+<script src="{% static 'js/profile/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/profile/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/profile/jquery.counterup.min.js' %}"></script>
+<script src="{% static 'js/profile/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+<script src="{% static 'js/profile/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'js/profile/infinite-scroll.min.js' %}"></script>
+<script src="{% static 'js/profile/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'js/profile/slick.min.js' %}"></script>
+<script src="{% static 'js/profile/contact.js' %}"></script>
+<script src="{% static 'js/profile/validator.js' %}"></script>
+<script src="{% static 'js/profile/custom.js' %}"></script>
+
+</body>
+</html>

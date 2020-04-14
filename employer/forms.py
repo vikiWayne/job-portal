@@ -21,4 +21,4 @@ class EmployerRegistrationForm(UserCreationForm):
 class PostJobForm(ModelForm):
     class Meta:
         model = Jobs
-        fields = ['title', 'description','qualifications','experience', 'salary', 'location']
+        fields = ['title', 'description','qualifications','experience', 'salary', 'location', 'type']

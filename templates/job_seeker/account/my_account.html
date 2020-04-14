@@ -1,0 +1,98 @@
+{% extends 'job_seeker/account/base.html' %}
+
+{% block title %} 
+  My Profile 
+{% endblock title %} 
+
+{% block stylesheet %}
+<style>
+  .job{
+    width: 80%;
+    background: #ffffff;
+    padding: 3%;
+    border-radius: 20px;
+    margin-bottom: 3%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    transform: scale(.95);
+    transition: all .5s;
+    box-shadow: 0px 0px 11px -8px rgba(0,0,0,0.75);
+
+  }
+  .job:hover{
+    transform: scale(1);
+    box-shadow: -2px 3px 23px -8px rgba(0,0,0,0.75);
+  }
+  .job-title h3{
+    color: #5E72E4 !important ;
+  }
+  span {
+    font-size: 12px;
+  }
+</style>
+{% endblock stylesheet %}
+
+
+{% block profile_content %}
+<h1>Your applications</h1>
+  <div>
+    {% for job in applications %}
+      <div class="job">
+        <div class="job-title">
+          <span>Job title</span>
+            <a href="{% url 'job-detail' job.jobs.id %}"> <h3> {{ job.jobs.title }} </h3> </a>
+        </div>
+        <div class="employer">
+          <span>Posted by </span>
+          <a href="{% url 'employer-detail' job.jobs.posted_by.id %}"> <h3> {{ job.jobs.posted_by.user.first_name }} </h3> </a>
+        </div>
+        <div class="date">
+          <span>Applied on</span>
+          <h3> {{ job.applied_date|date:"F d, Y"}} </h3>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock profile_content %}
+
+<div class="row">
+    <div class="col-xl-8">
+        <div>
+          <h4>Update your details</h4>
+        </div>
+        <form>
+
+          <div class="input-group p-2">
+            <input type="text" aria-label="First name" class="form-control" placeholder="First name">
+            <input type="text" aria-label="Last name" class="form-control" placeholder=" Last name">
+          </div>
+
+          <div class="form-group p-2">
+              <div class="input-group">
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+              </div>
+          </div>
+
+          <div class="form-group">
+              <div class="input-group">
+                <textarea class="form-control" aria-label="With textarea" placeholder="About You"></textarea>
+              </div>
+          </div>
+
+          <div class="custom-file p-2">
+              <input type="file" class="custom-file-input" id="customFileLang" lang="en">
+              <label class="custom-file-label" for="customFileLang">Select file</label>
+          </div>
+
+          <div class="p-2">
+            <button type="button" class="btn btn-primary btn-lg">Large button</button>
+          </div>
+
+        </form>
+
+    </div>
+    <div class="col-xl-4">
+
+    </div>
+  </div>

@@ -5,6 +5,7 @@ from django.utils import timezone
 
 from job_seeker.managers import CustomUserManager
 from employer.models import Jobs
+from PIL import Image
 
 class User(AbstractUser):
     username = None
@@ -28,11 +29,22 @@ class User(AbstractUser):
 
 class JobSeeker(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='jobseeker')
+    profile_picture = models.ImageField(default='employee.png', upload_to='employees')
     dob = models.DateField(null=True, blank=True)
     profession = models.CharField(max_length=50, null=True, blank=True)
     
     def __str__(self):
         return f'{ self.user.email } - Employee'
+    
+    def save(self, *args, **kwargs):
+        super(JobSeeker, self).save(*args, **kwargs)
+
+        img = Image.open(self.profile_picture.path)
+        if img.height > 150 or img.width > 150:
+            output_size = (150,150)
+            img.thumbnail(output_size)
+            img.save(self.profile_picture.path)
+
 
 
 class Resumes(models.Model):

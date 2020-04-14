@@ -23,34 +23,38 @@
                             <div class="row">
                                 <div class="col-lg-9">
                                     <ul class="post-job-bx">
+
                                         {% for job in object_list %}
-                                            <li>
-                                                <a href="{% url 'job-detail' job.id %}">
-                                                    <div class="d-flex m-b30">
-                                                        <div class="job-post-company">
-                                                            <span><img src="{% static 'images/job-icon.webp' %}"/></span>
-                                                        </div>
-                                                        <div class="job-post-info">
-                                                            <h4>{{job.title}}</h4>
-                                                            <ul>
-                                                                <li class="text-capitalize"><i class="fa fa-map-marker"></i> {{ job.location }} </li>
-                                                                <li class="text-capitalize"><i class="fa fa-bookmark-o"></i> {{ job.working_time }} </li>
-                                                                <li class="text-capitalize"><i class="fa fa-clock-o"></i> {{ job.posted_date|date:"F d, Y" }} </li>
-                                                            </ul>
-                                                        </div>
+                                        <li>
+                                            <a href="{% url 'job-detail' job.id %}">
+                                                <div class="d-flex m-b30">
+                                                    <div class="job-post-company">
+                                                        <span><img src="{% static 'images/job-icon.webp' %}"/></span>
                                                     </div>
-                                                    <div class="d-flex">
-                                                        <div class="job-time mr-auto">
-                                                            <span> {{ job.type }}</span>
-                                                        </div>
-                                                        <div class="salary-bx">
-                                                            <span>₹ {{job.salary}}</span>
-                                                        </div>
+                                                    <div class="job-post-info">
+                                                        <h4>{{job.title}}</h4>
+                                                        <ul>
+                                                            <li class="text-capitalize"><i class="fa fa-map-marker"></i> {{ job.location }} </li>
+                                                            <li class="text-capitalize"><i class="fa fa-bookmark-o"></i> {{ job.type }} </li>
+                                                            <li class="text-capitalize"><i class="fa fa-clock-o"></i> {{ job.posted_date|date:"F d, Y" }} </li>
+                                                        </ul>
                                                     </div>
-                                                    <!-- <span class="post-like fa fa-heart-o"></span> -->
-                                                </a>
-                                            </li>
+                                                </div>
+                                                <div class="d-flex">
+                                                    <div class="job-time mr-auto">
+                                                        <span> <i class="fa fa-user"> </i> {{ job.posted_by.user.first_name }}</span>
+                                                    </div>
+                                                    <div style="color: #312f30; font-family: rubik; font-size: 15px;">
+                                                        <span> {% if not job.experience %} Fresher {% else %} {{job.experience}} Year experience {% endif %} </span>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <!-- <span class="post-like fa fa-heart-o"></span> -->
+                                            </a>
+                                        </li>
                                         {% endfor %}
+
+
                                     </ul>
                                 </div>    
                             </div>

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    JobBoard - {{ object.title }}
+{% endblock title %}
+
+
+{% block stylesheet %}
+<style>
+    .tot-jobs{
+        width: 100%;
+        background: #2E55FA;
+        text-align: center;
+        padding: 1rem;
+        text-transform: capitalize;
+        margin-bottom: 10px;
+    }
+    .tot-jobs h6 a {
+        color: #ffffff;
+    }
+</style>
+{% endblock stylesheet %}
+
+{% block content %}
+
+<div class="page-content bg-white">
+
+    <!-- contact area -->
+    <div class="content-block">
+        <!-- Job Detail -->
+        <div class="section-full content-inner-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="sticky-top">
+                            <div class="row">
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="widget bg-white p-lr20 p-t20  widget_getintuch radius-sm">
+                                        <h4 class="text-black font-weight-700 p-t10 m-b15">Employer Details</h4>
+                                        <ul>
+                                            <li><i class="ti-location-pin"></i><strong class="font-weight-700 text-black"> Location </strong> <span class="text-black-light"> {% if object.location %} {{object.location}} {% else %} Location not updated {% endif %} </span></li>
+                                            <li><i class="ti-email"></i><strong class="font-weight-700 text-black">Mail</strong> <a href="mailto:">  {{ object.user.email }} </a> </li>
+                                                <li><i class="ti-mobile"></i><strong class="font-weight-700 text-black">Contact</strong> <a href="tel:"> {{ object.user.phone }} </a>  </li>
+                                        </ul>
+                                        <div class="tot-jobs">
+                                            <div >
+                                                <h6> <a href="{% url 'employer-jobs' object.id %}"> total jobs posted - {{ job_count  }} </a> </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="job-info-box">
+                            <h3 class="m-t0 m-b10 font-weight-700 title-head">
+                                <a href="#" class="text-secondry m-r30">{{ object.user.first_name }} {{ object.user.last_name }} </a>
+                            </h3>
+
+                            <div class="dez-divider divider-2px bg-gray-dark mb-4 mt-0"></div>
+                            <h5 class="font-weight-600">About</h5>
+                            <div class="dez-divider divider-2px bg-gray-dark mb-2 mt-0"></div>
+                            <p class="p-t20"> {% if object.description %} {{object.description}} {% else %} Employer details unavailable {% endif %} </p>                           
+                            
+                            <div class="dez-divider divider-2px bg-gray-dark mb-4 mt-0"></div>
+                            <h6 class="font-weight-600">Address</h6> 
+                            <div class="dez-divider divider-2px bg-gray-dark mb-4 mt-0"></div>
+                            <p> {% if object.address %} <address> {{ object.address }} </address> {% else %} Employer address unavailable {% endif %} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Job Detail -->
+        <!-- Our Jobs -->
+        <div class="section-full content-inner">
+
+        </div>
+        <!-- Our Jobs END -->
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block scripts %}
+
+{% endblock scripts %}

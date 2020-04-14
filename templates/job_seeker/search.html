@@ -19,12 +19,13 @@
                        <h3> Showing results for <span style="color: #2e55fa;"> {{ query }}</span></h3>
                    </div>
                    {% if not jobs %}
-                        <h5>We dont have any <span style="color: #2e55fa;"> {{ query }}</span> jobs</h5>
+                        <h5>We dont have any <span style="color: #2e55fa;"> {{ query }}</span> jobs. <span style="color:#2e55fa; font-size: 22px;" >Try something else..</span> </h5>
                     {% else %}
                         <div class="container">
                             <div class="row">
                                 <div class="col-lg-9">
                                     <ul class="post-job-bx">
+
                                         {% for job in jobs %}
                                             <li>
                                                 <a href="{% url 'job-detail' job.id %}">
@@ -36,23 +37,26 @@
                                                             <h4>{{job.title}}</h4>
                                                             <ul>
                                                                 <li class="text-capitalize"><i class="fa fa-map-marker"></i> {{ job.location }} </li>
-                                                                <li class="text-capitalize"><i class="fa fa-bookmark-o"></i> {{ job.working_time }} </li>
+                                                                <li class="text-capitalize"><i class="fa fa-bookmark-o"></i> {{ job.type }} </li>
                                                                 <li class="text-capitalize"><i class="fa fa-clock-o"></i> {{ job.posted_date|date:"F d, Y" }} </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="d-flex">
                                                         <div class="job-time mr-auto">
-                                                            <span> {{ job.working_time }}</span>
+                                                            <span> <i class="fa fa-user"> </i> {{ job.posted_by.user.first_name }}</span>
                                                         </div>
-                                                        <div class="salary-bx">
-                                                            <span>₹ {{job.salary}}</span>
+                                                        <div style="color: #312f30; font-family: rubik; font-size: 15px;">
+                                                            <span> {% if not job.experience %} Fresher {% else %} {{job.experience}} Year experience {% endif %} </span>
                                                         </div>
+                                                        
                                                     </div>
                                                     <!-- <span class="post-like fa fa-heart-o"></span> -->
                                                 </a>
                                             </li>
                                         {% endfor %}
+
+                                        
                                     </ul>
                                 </div>    
                             </div>
