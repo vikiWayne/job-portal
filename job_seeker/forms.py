@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 
-from job_seeker.models import User, JobSeeker
+from job_seeker.models import User, JobSeeker, Address
 
 class SignUpForm(UserCreationForm):
     class Meta:
@@ -15,9 +15,16 @@ class CustomUserChangeForm(UserChangeForm):
          fields = ['first_name','last_name','email','phone','about']
 
 class EditEmployeeForm(ModelForm):
+    profile_picture = forms.ImageField(error_messages = {'invalid':("Image files only")}, widget=forms.FileInput)
+
     class Meta:
         model = JobSeeker
-        fields = ('profile_picture','dob','profession',)
+        fields = ('dob','profession','gender','profile_picture')
+
+class AddressForm(ModelForm):
+    class Meta:
+        model = Address
+        fields = ('house_name', 'street', 'city', 'district', 'state', 'pin')
 
 class CustomAuthenticationForm(AuthenticationForm):
     error_messages = {

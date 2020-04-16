@@ -24,7 +24,7 @@ class Jobs(models.Model):
     description = models.TextField(help_text='A Detailed Description about job')
     qualifications = models.CharField(max_length=150)
     experience = models.IntegerField(default='0', help_text='Minimum experience')
-    salary = models.CharField(max_length=15, default='Salary package is not provided', help_text='Default currency is INR ₹')
+    salary = models.CharField(max_length=15, default='0.00', help_text='Default currency is INR ₹', null=True, blank =True)
     location = models.CharField(max_length=150, help_text='Job location')
     type = models.CharField(choices=JOB_TYPE , max_length=50)
     posted_by = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name='jobs')

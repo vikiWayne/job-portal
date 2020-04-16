@@ -3,33 +3,15 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView
 from django.contrib.auth import login, authenticate
 from django.views.generic import ListView,CreateView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.models import Group
+
 
 from employer.forms import PostJobForm, EmployerRegistrationForm
 from employer.models import Employer, Jobs
-from job_seeker.models import User
+from job_seeker.models import User, JobApplication
 from job_seeker.decorators import unauthenticated_user, allowed_users
 
-@login_required
-@allowed_users(allowed_roles=['employer'])
-def post_job(request):
-    if request.method == 'POST':
-        form = PostJobForm(request.POST)
-        if form.is_valid():
-            job = form.save(commit=False)
-            try:
-                employer = User.objects.get(email=request.user)
-            except User.DoesNotExist:
-                pass
-            job.posted_by = employer.employer
-            job.save()
-            return redirect('post_job')
-    else:
-        form = PostJobForm()
-    context = {
-        'form' : form
-    }
-    return render(request,'employer/post_job.html', context)
 
 @unauthenticated_user
 def RegisterEmployerView(request):
@@ -40,6 +22,10 @@ def RegisterEmployerView(request):
             password = form.cleaned_data.get('password1')
             employer.set_password(password)
             employer.save()
+            
+            group = Group.objects.get(name = 'employer')
+            employer.groups.add(group)
+            
             return redirect('login')
     else:
         form = EmployerRegistrationForm()
@@ -49,9 +35,43 @@ def RegisterEmployerView(request):
     }
     return render(request, 'employer/register.html', context)
 
+@login_required
+@allowed_users(allowed_roles=['employer'])
+def edit_employer(request):
+    if request.method == 'POST':
+        form = PostJobForm(request.POST)
+        if form.is_valid():
+            job = form.save(commit=False)
+            try:
+                employer = User.objects.get(email=request.user)
+            except User.DoesNotExist:
+                pass
+            job.posted_by = employer.employer
+            job.save()
+            return redirect('employer-account   ')
+    else:
+        form = PostJobForm()
+    context = {
+        'form' : form
+    }
+    return render(request, 'employer/account/post-job.html',context)
+
+
 class JobDetailView(DetailView):
     model = Jobs
     template_name = 'employer/job_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(JobDetailView, self).get_context_data(**kwargs)
+        job_id = self.kwargs['pk']
+        job = self.model.objects.get(id=job_id)
+        try:
+            applied_job = JobApplication.objects.get(jobs = job)
+            context['applied_job'] = applied_job.jobs
+        except JobApplication.DoesNotExist:
+            pass
+        context['object'] = job
+        return context
 
 class EmployerDetailView(DetailView):
     model = Employer

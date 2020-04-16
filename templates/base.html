@@ -64,7 +64,7 @@
                                 {% if user.is_employee %}
                                     <a href="{% url 'edit_profile' %}">  <i class="fa fa-user fa-lg" style="padding-right:20px"></i> </a>
                                 {% else %}
-                                    <a href="#"> <i class="fa fa-user fa-lg" style="padding-right:20px"></i> </a>
+                                    <a href=" {% url 'employer-account' %} "> <i class="fa fa-user fa-lg" style="padding-right:20px"></i> </a>
                                 {% endif %}
                                 <a href="{% url 'logout' %}"> <i class="fa fa-power-off fa-lg" style="padding-right:20px"></i></a>
                             {% else %}

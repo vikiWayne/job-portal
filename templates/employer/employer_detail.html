@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    JobBoard - {{ object.title }}
+    JobBoard - {{ object.user.first_name }}
 {% endblock title %}
 
 
@@ -30,6 +30,7 @@
         <!-- Job Detail -->
         <div class="section-full content-inner-1">
             <div class="container">
+                {% if not object.user.is_superuser %}
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="sticky-top">
@@ -43,11 +44,13 @@
                                             <li><i class="ti-email"></i><strong class="font-weight-700 text-black">Mail</strong> <a href="mailto:">  {{ object.user.email }} </a> </li>
                                                 <li><i class="ti-mobile"></i><strong class="font-weight-700 text-black">Contact</strong> <a href="tel:"> {{ object.user.phone }} </a>  </li>
                                         </ul>
+                                        {% if job_count > 0 %}
                                         <div class="tot-jobs">
                                             <div >
                                                 <h6> <a href="{% url 'employer-jobs' object.id %}"> total jobs posted - {{ job_count  }} </a> </h6>
                                             </div>
                                         </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -71,6 +74,16 @@
                         </div>
                     </div>
                 </div>
+                {% else %}
+                <script>
+                    function redirect(){
+                       window.location.href = "/";
+                    }
+                
+                    redirect()
+                </script>
+                {% endif %}
+
             </div>
         </div>
         <!-- Job Detail -->

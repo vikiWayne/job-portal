@@ -26,10 +26,16 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'User'
 
+GENDER = (
+    ('male', 'Male'),
+    ('female','Female'),
+    ('other','Other')
+)
 
 class JobSeeker(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='jobseeker')
-    profile_picture = models.ImageField(default='employee.png', upload_to='employees')
+    profile_picture = models.ImageField(default='employee.png', upload_to='employees', null=True, blank=True)
+    gender = models.CharField(choices=GENDER, null=True, blank=True, max_length=6)
     dob = models.DateField(null=True, blank=True)
     profession = models.CharField(max_length=50, null=True, blank=True)
     
@@ -65,7 +71,6 @@ class Address(models.Model):
     district = models.CharField(max_length=30, null=True, blank=True )
     state = models.CharField(max_length=30, null=True, blank=True )
     pin = models.CharField(max_length=10, null=True, blank=True )
-    land_mark = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         # pylint: disable=E1101
@@ -73,8 +78,8 @@ class Address(models.Model):
 
 class JobApplication(models.Model):
     user = models.ForeignKey(JobSeeker, on_delete=models.CASCADE, related_name='jobapplication')
-    jobs = models.ForeignKey(Jobs, related_name='jobapplication', on_delete=models.CASCADE)
+    jobs = models.ForeignKey(Jobs, on_delete=models.CASCADE, related_name='jobapplication')
     applied_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f'{ self.user.user.email }- Applications'
+        return f'{ self.user.user.first_name } - { self.jobs.title }- Applications'

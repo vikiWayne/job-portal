@@ -6,9 +6,10 @@ from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.views.generic import UpdateView
+from django.contrib.auth.models import Group
 
 from employer.models import Jobs,Employer
-from job_seeker.forms import SignUpForm, CustomUserChangeForm, EditEmployeeForm
+from job_seeker.forms import SignUpForm, CustomUserChangeForm, EditEmployeeForm, AddressForm
 from job_seeker.models import JobApplication
 from job_seeker.decorators import unauthenticated_user, allowed_users
 
@@ -27,6 +28,10 @@ def register(request):
         if form.is_valid():
             user = form.save(commit = False)
             user.save()
+            
+            group = Group.objects.get(name = 'employee')
+            user.groups.add(group)
+            
             return redirect('login')
     else:
         form = SignUpForm()
@@ -35,7 +40,6 @@ def register(request):
     }
     return render(request, 'job_seeker/signup.html', context)
 
-# ******************************************** LOGICAL MISS MATCH **********************************************
 @login_required
 def profile(request):
     if not request.user.is_employee:
@@ -45,14 +49,40 @@ def profile(request):
 @login_required
 @allowed_users(allowed_roles=['employee'])
 def edit_profile(request):
-    total_applications = JobApplication.objects.all().filter(user = request.user.jobseeker)
+    try:
+        total_applications = JobApplication.objects.all().filter(user = request.user.jobseeker)
+    except JobApplication.DoesNotExist:
+        return HttpResponse(status = 404)
     context = {
         'applications' : total_applications,
         'total_applications' : total_applications.count(),
-    }
-    return render(request,'job_seeker/account/my_account.html', context)
+            }
+    return render(request,'job_seeker/account/my_account.html',context)
 
-# ******************************************** LOGICAL MISS MATCH **********************************************
+@login_required
+@allowed_users(allowed_roles=['employee'])
+def edit_employee(request):
+    if request.method == 'POST':
+        form1 = CustomUserChangeForm(request.POST, instance=request.user)
+        form2 = EditEmployeeForm(request.POST, request.FILES, instance=request.user.jobseeker)
+        form3 = AddressForm(request.POST, instance=request.user.jobseeker.address)
+        if form1.is_valid() and form2.is_valid():
+            form1.save()
+            form2.save()
+            return redirect('edit_emp_data')
+        if form3.is_valid():
+            form3.save()
+            return redirect('edit_emp_data')
+    else:
+        form1 = CustomUserChangeForm(instance=request.user)
+        form2 = EditEmployeeForm(instance=request.user.jobseeker)
+        form3 = AddressForm(instance=request.user.jobseeker.address)
+    context = {
+        'form1' : form1,
+        'form2' : form2,
+        'form3' : form3
+    }
+    return render(request,'job_seeker/account/edit_account.html',context)
 
 
 def SearchResultsView(request):

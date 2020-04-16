@@ -15,10 +15,8 @@
 
             <div class="find-job-bx mt-5">
                 <div>
-
                    {% if not object_list %}
                         <h5>There is no Employers registered with us </h5>
-                        {{ object_list }}
                     {% else %}
                         <div class="container">
                             <div class="row">
@@ -41,9 +39,11 @@
                                                         </div>
                                                     </div>
                                                     <div class="d-flex">
+                                                        {% if employer.location %}
                                                         <div class="job-time mr-auto">
                                                             <span> <i class="fa fa-map-marker"></i> {{ employer.location }} <span>
                                                         </div>
+                                                        {% endif %}
                                                         <!-- <div class="salary-bx">
                                                             <span> salary </span>
                                                         </div> -->

@@ -6,5 +6,6 @@ urlpatterns = [
     path('jobs/', views.JobListView.as_view(), name='jobs'),
     path('profile/', views.profile, name='profile'),
     path('edit/profile/', views.edit_profile, name='edit_profile'),
+    path('edit/profile/update/', views.edit_employee, name='edit_emp_data'),
     path('search/',views.SearchResultsView, name='search_results'),
 ]

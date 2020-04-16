@@ -64,7 +64,7 @@
 		<div class="header-inner d-flex align-items-start flex-column">
 			<a href="#"><img src="{{ user.jobseeker.profile_picture.url }}" alt="{{ user.first_name }}" height="70px" width="70px" /></a>
 			<a href="#" class="site-title dot mt-3 text-capitalize">{{ user.first_name }} {{ user.last_name }}</a>
-			<span class="site-slogan"> {{ user.profession }} </span>
+			<span class="site-slogan"> {% if user.jobseeker.profession %} {{ user.jobseeker.profession }} {% endif %} </span>
 			
 			<!-- navigation menu -->
 			<nav>
@@ -95,16 +95,17 @@
 				</div>
 				<div class="col-md-9">
 					<h2 class="mt-4 mt-md-0 mb-4">Hello,</h2>
-					<p class="mb-0"> {{ user.about }} </p>
+					<p class="mb-0"> {% if user.about %} {{ user.about }} {% else %} I'll update this soon ! {% endif %} </p>
 					<div class="row my-4">
 						<div class="col-md-6">
 							<p class="mb-2">Name: <span class="text-dark text-capitalize">{{ user.first_name }} {{ user.last_name }}</span></p>
-							<p class="mb-0">Birthday: <span class="text-dark"> {% if not user.dob %} Not mentioned {% else %} {{ user.dob }} {% endif %} </span></p>
+							<p class="mb-2">Date of Birth: <span class="text-dark"> {% if not user.jobseeker.dob %} Not mentioned {% else %} {{ user.jobseeker.dob }} {% endif %} </span></p>
+							<p class="mb-2">Gender: <span class="text-dark text-capitalize"> {% if not user.jobseeker.gender %} Not mentioned {% else %} {{ user.jobseeker.gender }} {% endif %} </span></p>
 						</div>
 						<div class="col-md-6 mt-2 mt-md-0 mt-sm-2">
 							<p class="mb-2">Location: <span class="text-dark"> {% if user.jobseeker.address.city or  user.jobseeker.address.district or user.jobseeker.address.state %} {{ user.jobseeker.address.city }}, {{ user.jobseeker.address.district }} - {{ user.jobseeker.address.state }} {% else %} Not mentioned {% endif %} </span></p>
-							<p class="mb-0">Email: <span class="text-dark"> <a href="mailto:"> {{ user.email }} </a> </span></p>
-							<p class="mb-0">Contact: <span class="text-dark"> <a href="tel:"> {{ user.phone }} </a>  </span></p>
+							<p class="mb-2">Email: <span class="text-dark"> <a href="mailto:"> {{ user.email }} </a> </span></p>
+							<p class="mb-2">Contact: <span class="text-dark"> <a href="tel:"> {{ user.phone }} </a>  </span></p>
 						</div>
 					</div>
 					<a href="#" class="btn btn-default mr-3"><i class="fa fa-file-download"> </i> Download CV</a>

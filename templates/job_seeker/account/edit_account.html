@@ -1,0 +1,199 @@
+{% extends 'job_seeker/account/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %} 
+  My Profile 
+{% endblock title %} 
+
+{% block stylesheet %}
+<style>
+  label{
+    font-size: 12px;
+  }
+  .error{
+    border: 1px solid #ec3d3d;
+  }
+</style>
+{% endblock stylesheet %}
+
+
+{% block profile_content %}
+    <h1>Edit your details</h1>
+    <hr class="w-100";">
+    <div class="container w-75 mb-5 ">
+      <h3>Personal details</h3>
+      {{ form1.non_field_errors }}
+      {{ form2.non_field_errors }}
+      <form action="" method="POST" id="update_form" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row pb-2">
+          <div class="col-md-6">
+            <label for="id_first_name">First Name</label>
+            {{ form1.first_name|attr:'class:form-control'|attr:'placeholder:First Name' }}
+            {{ form1.first_name.errors}}
+          </div>
+          <div class="col-md-6">
+            <label for="id_last_name">Last Name</label>
+            {{ form1.last_name|attr:'class:form-control'|attr:'placeholder:Last Name' }}
+            {{ form1.last_name.errors}}
+          </div>
+        </div>
+
+        <div class="row pb-2">
+          <div class="col-md-6">
+            <label for="id_email">Email</label>
+            {{ form1.email|attr:'class:form-control'|attr:'placeholder:email address' }}
+            {{ form1.email.errors}}
+          </div>
+          <div class="col-md-6">
+            <label for="id_phone">Contact</label>
+            {{ form1.phone|attr:'class:form-control'|attr:'placeholder:phone number' }}
+            {{ form1.phone.errors}}
+          </div>
+        </div>
+
+        <div class="row pb-2">
+          <div class="col-md-12">
+            <label for="id_profession">Profession</label>
+            {{ form2.profession|attr:'class:form-control'|attr:'placeholder:Profession' }}
+            {{ form2.profession.errors}}
+          </div>
+        </div>
+
+        <div class="pb-2">
+          <label for="id_about">About you</label>
+          {{ form1.about|attr:'class:form-control'|attr:'placeholder:A brief about you' }}
+        </div>
+
+        <div class="row pb-2">
+          <div class="col-md-6">
+            <label for="id_dob">Date of Birth</label> 
+            {{ form2.dob|attr:'class:form-control'|attr:'placeholder:YYYY-MM-DD' }}
+            {{ form2.dob.errors}}
+          </div>
+          <div class="col-md-6">
+            <label for="id_gender">Gender</label>
+            {{ form2.gender|attr:'class:form-control' }}
+            {{ form2.gender.errors}}
+
+          </div>
+        </div>
+
+        <div class="row pb-2">
+          <div class="col-md-12">
+            <label for="id_profile_picture">Change profile picture (600x600)</label>
+            {{ form2.profile_picture|attr:'class:form-control' }}
+            {{ form2.profile_picture.errors}}
+          </div>
+        </div>
+
+        <button class=" btn btn-primary w-100">Save details</button>
+      </form>
+    </div>
+    <hr>
+
+    <div class="mb-5">
+      <h1>Update your Address</h1>
+      <hr class="w-100";">
+      <div class="container w-75 mb-5 ">
+        {{ form3.non_field_errors }}
+        <form action="" method="POST">
+          {% csrf_token   %}
+
+          <div class="row pb-2">
+            <div class="col-md-12">
+              <label for="id_house_name">House Name</label>
+              {{ form3.house_name|attr:'class:form-control'|attr:'placeholder:House Name' }}
+              {{ form3.house_name.errors}}
+            </div>
+          </div>
+
+          <div class="row pb-2">
+            <div class="col-md-6">
+              <label for="id_street">Street Name</label>
+              {{ form3.street|attr:'class:form-control'|attr:'placeholder:Street Name' }}
+              {{ form3.street.errors }}
+            </div>
+            <div class="col-md-6">
+              <label for="id_city"> City </label>
+              {{ form3.city|attr:'class:form-control'|attr:'placeholder:City' }}
+              {{ form3.city.errors }}
+            </div>
+          </div>
+
+          <div class="row pb-5">
+            <div class="col-md-4">
+              <label for="id_street">District</label>
+              {{ form3.district|attr:'class:form-control'|attr:'placeholder:District' }}
+              {{ form3.district.errors }}
+
+            </div>
+            <div class="col-md-4">
+              <label for="id_city"> State </label>
+              {{ form3.state|attr:'class:form-control'|attr:'placeholder:State' }}
+              {{ form3.state.errors }}
+
+            </div>
+            <div class="col-md-4">
+              <label for="id_city"> PIN </label>
+              {{ form3.pin|attr:'class:form-control'|attr:'placeholder:Pin number' }}
+              {{ form3.pin.errors }}
+            </div>
+          </div>
+        <button class=" btn btn-primary w-100">Update Address </button>
+
+        </form>
+      </div>
+    </div>
+{% endblock profile_content %}
+
+
+{% block script  %}
+<script>
+  $(document).ready(function() {
+
+    let is_compatable = true
+    var _URL = window.URL || window.webkitURL;
+    $('#id_profile_picture').change( function (e) {
+      is_compatable=true
+      var file, img;
+      var maxWidth = 600;
+      var maxHeight = 600;
+      if( (file= this.files[0]) ) {
+        img = new Image();
+        var objectUrl = _URL.createObjectURL(file);
+        img.onload = function () {
+          if( this.width > maxWidth || this.height > maxHeight ){
+            is_compatable = false;
+            alert('Image must be less than 600x600')
+          }
+
+            _URL.revokeObjectURL(objectUrl);
+        };
+        img.src = objectUrl;
+      }
+    });
+
+
+
+    $('#update_form').submit(function(e){
+    
+    if(is_compatable){
+      if ($('#id_first_name').val() == '' ) {
+        e.preventDefault()
+          $('#id_first_name').addClass('error')
+      }
+      if ($('#id_last_name').val() == '' ) {
+        e.preventDefault()
+          $('#id_last_name').addClass('error')
+      }
+    }
+    else {
+      e.preventDefault()
+      alert('change the image');
+    }
+    })
+  })
+</script>
+{% endblock script  %}

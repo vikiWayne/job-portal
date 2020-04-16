@@ -1,0 +1,102 @@
+{% extends 'employer/account/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %} 
+    Create new job
+{% endblock title %}
+
+{% block stylesheet %}
+<style>
+    label{
+      font-size: 12px;
+      color: #3d3d3d;
+    }
+    .error{
+      border: 1px solid #ec3d3d;
+    }
+  </style>
+{% endblock stylesheet %}
+
+
+{% block profile_content %}
+    <h1>Create new Job</h1>
+    <hr class="w-100">
+    <div class="container w-75 mb-5">
+        {{ form.non_field_errors }}
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <div class="row pb-2">
+                <div class="col-md-12">
+                    <label for="id_title"> Job Title</label>
+                    {{ form.title|attr:'class:form-control'|attr:'placeholder:Job title' }}
+                    <small class="text-danger">
+                        {{ form.title.errors }}
+                    </small>
+                </div>
+            </div>
+
+            <div class="row pb-2">
+                <div class="col-md-12">
+                    <label for="id_type">Job type</label>
+                    {{ form.type|attr:'class:form-control'}}
+                    <small class="text-danger">
+                        {{ form.type.errors }}
+                    </small>
+                </div>
+            </div>
+
+            <div class="pb-2">
+                <label for="id_description">Job Description</label>
+                {{ form.description|attr:'class:form-control'|attr:'placeholder:Detailed description about job' }}
+                <small class="text-danger">
+                    {{ form.description.errors }}
+                </small>
+            </div>
+
+            <div class="row pb-2">
+                <div class="col-md-6">
+                    <label for="id_qualifications">Qualification</label>
+                    {{ form.qualifications|attr:'class:form-control'|attr:'placeholder:Qualification' }}
+                    <small class="text-danger">
+                        {{ form.qualifications.errors }}
+                    </small>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_experience">Experience (in Years)</label>
+                    {{ form.experience|attr:'class:form-control'|attr:'placeholder:Experience' }}
+                    <small class="text-danger">
+                        {{ form.experience.errors }}
+                    </small>
+                </div>
+            </div>
+
+            <div class="row pb-2">
+                <div class="col-md-12">
+                    <label for="id_location">Job Location</label>
+                    {{ form.location|attr:'class:form-control'|attr:'placeholder: Job Location' }}
+                    <small class="text-danger">
+                        {{ form.location.errors }}
+                    </small>
+                </div>
+            </div>
+
+            <div class="row pb-2">
+                <div class="col-md-12">
+                    <label for="id_location">Salary</label>
+                    {{ form.salary|attr:'class:form-control'|attr:'placeholder: Salary' }}
+                    <small class="text-danger">
+                        {{ form.salary.errors }}
+                    </small>
+                    <small style="font-size: 11px;" class="text-primary">Default currency is INR ₹</small>
+                </div>
+            </div>
+            
+            <button class=" btn btn-success w-100">Post Job</button>
+
+        </form>
+    </div>
+{% endblock profile_content %}
+
+{% block script  %}
+{% endblock script  %}
