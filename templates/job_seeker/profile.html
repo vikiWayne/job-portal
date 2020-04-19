@@ -4,7 +4,7 @@
 <html lang="en-US">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>JobBoard - {{ user.email }}</title>
+	<title>JobBoard - {{ user.first_name }}</title>
 	<meta name="description" content="Bako - Personal Portfolio & Resume HTML Template">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
@@ -53,18 +53,17 @@
 			<span></span>
 		</button>
 		<a href="#" class="logo"><img src=" {{ user.jobseeker.profile_picture.url }} " alt="{{ user.first_name }}" /></a>
-		<a href="#" class="site-title dot ml-2 text-capitalize">{{ user.first_name }} {{ user.last_name }} </a>
+		<a href="#" class="site-title dot ml-2 text-capitalize">{{ object.user.first_name }} {{ object.user.last_name }} </a>
 	</div>
-
 	<!-- header -->
 	<header class="left float-left shadow-dark" id="header">
 		<button type="button" class="close" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
 		<div class="header-inner d-flex align-items-start flex-column">
-			<a href="#"><img src="{{ user.jobseeker.profile_picture.url }}" alt="{{ user.first_name }}" height="70px" width="70px" /></a>
-			<a href="#" class="site-title dot mt-3 text-capitalize">{{ user.first_name }} {{ user.last_name }}</a>
-			<span class="site-slogan"> {% if user.jobseeker.profession %} {{ user.jobseeker.profession }} {% endif %} </span>
+			<a href="#"><img src="{{ object.profile_picture.url }}" alt="{{ user.first_name }}" height="70px" width="70px" /></a>
+			<a href="#" class="site-title dot mt-3 text-capitalize">{{ object.user.first_name }} {{ object.user.last_name }}</a>
+			<span class="site-slogan"> {% if object.user.jobseeker.profession %} {{ object.user.jobseeker.profession }} {% endif %} </span>
 			
 			<!-- navigation menu -->
 			<nav>
@@ -86,26 +85,26 @@
 
 		<!-- section about -->
 		<section id="about" class="shadow-blue white-bg padding" style="margin-top: 0 !important;">
-			<h3 class="section-title text-capitalize">About <span style="color: #4A63E7;font-size: 38px;">{{ user.first_name }} {{ user.last_name }}</span> </h3>
+			<h3 class="section-title text-capitalize">About <span style="color: #4A63E7;font-size: 38px;">{{ object.user.first_name }} {{ object.user.last_name }}</span> </h3>
 			<div class="spacer" data-height="80"></div>
 
 			<div class="row">
 				<div class="col-md-3">
-					<img src="{{ user.jobseeker.profile_picture.url }}" alt="profile pic" />
+					<img src="{{ object.profile_picture.url }}" alt="profile pic" />
 				</div>
 				<div class="col-md-9">
 					<h2 class="mt-4 mt-md-0 mb-4">Hello,</h2>
-					<p class="mb-0"> {% if user.about %} {{ user.about }} {% else %} I'll update this soon ! {% endif %} </p>
+					<p class="mb-0"> {% if object.user.about %} {{ object.user.about }} {% else %} I'll update this soon ! {% endif %} </p>
 					<div class="row my-4">
 						<div class="col-md-6">
-							<p class="mb-2">Name: <span class="text-dark text-capitalize">{{ user.first_name }} {{ user.last_name }}</span></p>
-							<p class="mb-2">Date of Birth: <span class="text-dark"> {% if not user.jobseeker.dob %} Not mentioned {% else %} {{ user.jobseeker.dob }} {% endif %} </span></p>
-							<p class="mb-2">Gender: <span class="text-dark text-capitalize"> {% if not user.jobseeker.gender %} Not mentioned {% else %} {{ user.jobseeker.gender }} {% endif %} </span></p>
+							<p class="mb-2">Name: <span class="text-dark text-capitalize">{{ object.user.first_name }} {{ object.user.last_name }}</span></p>
+							<p class="mb-2">Date of Birth: <span class="text-dark"> {% if not object.dob %} Not mentioned {% else %} {{ object.dob }} {% endif %} </span></p>
+							<p class="mb-2">Gender: <span class="text-dark text-capitalize"> {% if not object.gender %} Not mentioned {% else %} {{ object.gender }} {% endif %} </span></p>
 						</div>
 						<div class="col-md-6 mt-2 mt-md-0 mt-sm-2">
-							<p class="mb-2">Location: <span class="text-dark"> {% if user.jobseeker.address.city or  user.jobseeker.address.district or user.jobseeker.address.state %} {{ user.jobseeker.address.city }}, {{ user.jobseeker.address.district }} - {{ user.jobseeker.address.state }} {% else %} Not mentioned {% endif %} </span></p>
-							<p class="mb-2">Email: <span class="text-dark"> <a href="mailto:"> {{ user.email }} </a> </span></p>
-							<p class="mb-2">Contact: <span class="text-dark"> <a href="tel:"> {{ user.phone }} </a>  </span></p>
+							<p class="mb-2">Location: <span class="text-dark"> {% if object.address.city or  object.address.district or object.address.state %} {{ object.address.city }}, {{ object.address.district }} - {{ object.address.state }} {% else %} Not mentioned {% endif %} </span></p>
+							<p class="mb-2">Email: <span class="text-dark"> <a href="mailto:"> {{ object.user.email }} </a> </span></p>
+							<p class="mb-2">Contact: <span class="text-dark"> <a href="tel:"> {{ object.user.phone }} </a>  </span></p>
 						</div>
 					</div>
 					<a href="#" class="btn btn-default mr-3"><i class="fa fa-file-download"> </i> Download CV</a>

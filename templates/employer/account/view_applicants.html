@@ -1,0 +1,96 @@
+{% extends 'employer/account/base.html' %}
+
+{% block title %}
+{{ job.title }} - Applicants
+{% endblock title %} 
+
+{% block stylesheet %}
+<style>
+    .job-card {
+        width: 70%;
+      background: #ffffff;
+      padding: 3%;
+      border-radius: 20px;
+      margin-bottom: 3%;
+      display: flex;
+      flex-direction: row;
+      justify-content:space-between;
+      transform: scale(.95);
+      transition: all .5s;
+      box-shadow: 0px 0px 11px -8px rgba(0,0,0,0.75);
+    }
+    .job-card:hover{
+      transform: scale(1);
+      box-shadow: -2px 3px 23px -8px rgba(0,0,0,0.75);
+    }
+    .name h3 {
+      color: #5E72E4 !important ;
+      text-transform: capitalize;
+      font-size: 22px;
+      font-weight: normal;
+    }
+    .pic img {
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        border: 1px solid #ffffff;
+    }
+    .job-title {
+        font-size: 22px;
+        color: #512DA8;
+    }
+    .name, .profile{
+        margin: auto;
+    }
+    .circle{
+        font-weight:800;
+        font-size: 25px;
+    }
+</style>
+{% endblock stylesheet %}
+
+{% block profile_content %}
+<div>
+    <a href="{% url 'employer-applicants' %}" class="btn btn-primary"> <i class="ni ni-bold-left"></i> Back</a>
+
+</div>
+<div class="p-3">
+    <div class="pb-3">
+        <h3>Applicants for <span class="job-title">{{ job.title }}</span> </h3>
+            <small>Total Applications Received- <span class="circle"> {{ applicants.count }}</span>
+         </small>
+    </div>
+    {% if applicants %}
+        {% for applicant in applicants %}
+        <div class="row pb-2 w-100">
+            <div class="job-card">
+                <div class="pic">
+                    <img src="{{ applicant.user.profile_picture.url }}" alt="">
+                </div>
+                <div class="name">
+                    <h3> {{ applicant.user.user.first_name }} </h3>
+                </div>
+               <div class="name">
+                   <span>Applied on</span>
+                   <h4>  {{ applicant.applied_date|date:"d M Y " }} </h4>
+               </div>
+                <div class="profile">
+                    <h4><a href="{% url 'profile' applicant.user.id %}" target="_blank"> view Profile</a></h4>
+                </div>
+            </div>
+        </div>  
+        {% endfor %}
+    {% else %}
+    <div class="text-center">
+        <h1 class="text-red">This job doesn't have any applicants </h1>
+    </div>
+    {% endif %}
+</div>
+
+
+
+{% endblock profile_content %}
+
+
+{% block script  %}
+{% endblock script  %}

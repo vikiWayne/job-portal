@@ -1,0 +1,103 @@
+{% extends 'employer/account/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %} 
+Update Details 
+{% endblock title %} 
+
+{% block stylesheet %}
+<style>
+    label{
+      font-size: 12px;
+      color: #3d3d3d;
+    }
+    .error{
+      border: 1px solid #ec3d3d;
+    }
+</style>
+{% endblock stylesheet %}
+
+{% block profile_content %}
+<div>
+    <h3 class="text-dark text-capitalize"> Update your account</h3>
+    <hr class="w-100">
+
+    <div class="m-2 mb-5">
+        <div class="container">
+
+            {{ form1.non_field_errors }}
+            {{ form2.non_field_errors }}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row pb-2">
+                    <div class="col-md-12">
+                        <label for="id_first_name"> Company name</label>
+                        {{ form2.first_name|attr:'class:form-control'|attr:'placeholder: Name' }}
+                        <small class="text-danger">
+                            {{ form2.first_name.errors }}
+                        </small>
+                    </div>
+                </div>
+
+                <div class="row pb-2">
+                    <div class="col-md-6">
+                        <label for="id_email">Email</label>
+                        {{ form2.email|attr:'class:form-control'|attr:'placeholder: Email' }}
+                        <small class="text-danger">
+                            {{ form2.email.errors }}
+                        </small>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="id_phone">Phone</label>
+                        {{ form2.phone|attr:'class:form-control'|attr:'placeholder: Contact number' }}
+                        <small class="text-danger">
+                            {{ form2.phone.errors }}
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="row pb-2">
+                    <div class="col-md-12">
+                        <label for="id_about">About</label>
+                        {{ form2.about|attr:'class:form-control'|attr:'placeholder: Description about you' }}
+                        <small class="text-danger">
+                            {{ form2.about.errors }}
+                        </small>
+                    </div>
+                </div>
+
+                <div class="row pb-2">
+                    <div class="col-md-12">
+                        <label for="id_about">Location</label>
+                        {{ form1.location|attr:'class:form-control'|attr:'placeholder: Location' }}
+                        <small class="text-danger">
+                            {{ form1.location.errors }}
+                        </small>
+                    </div>
+                </div>
+
+                <div class="row pb-2">
+                    <div class="col-md-12">
+                        <label for="id_about">Address</label>
+                        {{ form1.address|attr:'class:form-control'|attr:'placeholder: Your address' }}
+                        <small class="text-danger">
+                            {{ form1.address.errors }}
+                        </small>
+                    </div>
+                </div>
+
+                <div class="row pb-5 text-center ">
+                    <button class="btn w-100 btn-success"> Update Data</button>
+                </div>
+            </form>
+
+        </div>
+        
+    </div>
+</div>
+
+{% endblock profile_content %}
+
+{% block script  %}
+{% endblock script  %}

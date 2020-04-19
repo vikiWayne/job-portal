@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="w-100 text-center p-5 m-auto" style="background: #C82333; min-height: 395px;">
+<div class="mt-5">
+    <h2>Do you want to really delete job for <span class="text-white">{{ object.title }}</span> ?</h2>
+</div>
+    <div class="content-section">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <button type="submit" class="btn btn-white w-25">Yes, Delete</button>
+                <a class="btn btn-outline-white text-white" href="{% url 'employer-applicants' %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+
+{% endblock content %}
+

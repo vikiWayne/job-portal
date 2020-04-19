@@ -1,0 +1,81 @@
+{% extends 'employer/account/base.html' %}
+{% load static %}
+{% block title %}
+    Applicants
+{% endblock title %}
+
+
+{% block stylesheet %}
+<style>
+    .job{
+      width: 80%;
+      background: #ffffff;
+      padding: 3%;
+      border-radius: 20px;
+      margin-bottom: 3%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      transform: scale(.95);
+      transition: all .5s;
+      box-shadow: 0px 0px 11px -8px rgba(0,0,0,0.75);
+  
+    }
+    .job:hover{
+      transform: scale(1);
+      box-shadow: -2px 3px 23px -8px rgba(0,0,0,0.75);
+    }
+    .job-title h3{
+      color: #5E72E4 !important ;
+    }
+    .link {
+      color:red !important
+    }
+    .auto {
+      margin: auto;
+    }
+  </style>
+{% endblock stylesheet %}
+
+{% block profile_content %}
+<h1>Your job postings</h1>
+{% if jobs %}
+  {% for job in jobs %}
+      <div class="job">
+          <div class="job-title" data-id="{{ job.id }}">
+              <span>Job title</span>
+              <a href="{% url 'job-detail' job.id %}" target="_blank"> <h3> {{ job.title }} </h3> </a>
+          </div>
+          <div class="auto">
+              <span>Posted on </span>
+              <h3> {{ job.posted_date|date:"F d, Y"}} </h3>
+          </div>
+          <div class="auto">
+              <a href="{% url 'applicants' job.id %}" class="text-right link"> view applicants</a>
+          </div>
+    </div>
+  {% endfor %}
+{% else %}
+<div class="p-5">
+  <a href="{% url 'employer-account' %}" class="d-flex flex-column justify-content-start"> 
+    <div class="m-auto">
+      <i class="fas fa-plus-circle fa-2x"></i>
+    </div>
+    <div class="m-auto">
+      <small>Create first job</small>
+    </div>
+  </a>
+</div>
+{% endif %}
+
+<!-- {% for applicant in applicants %}
+  {{ applicant.user.user.first_name }} - {{ applicant.jobs.title }} - {{ applicant.applied_date|date:"F d, Y" }}<br>
+{% endfor %} -->
+
+{% endblock profile_content %}
+
+
+{% block script %}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+{% endblock script %}

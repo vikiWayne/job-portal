@@ -4,7 +4,6 @@ from django.utils import timezone
 
 class Employer(models.Model):
     user = models.OneToOneField('job_seeker.User', on_delete=models.CASCADE, related_name='employer')
-    description = models.TextField(help_text='A Detailed Description about Employer')
     location = models.CharField(max_length=150, help_text='Employer location')
     address = models.TextField(help_text='Detaild address', null=True, blank=True)
 

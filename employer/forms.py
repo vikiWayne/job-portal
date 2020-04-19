@@ -22,3 +22,8 @@ class PostJobForm(ModelForm):
     class Meta:
         model = Jobs
         fields = ['title', 'description','qualifications','experience', 'salary', 'location', 'type']
+
+class ProfileUpadteForm(ModelForm):
+    class Meta:
+        model = Employer
+        fields = ['location', 'address']

@@ -15,7 +15,7 @@ class CustomUserChangeForm(UserChangeForm):
          fields = ['first_name','last_name','email','phone','about']
 
 class EditEmployeeForm(ModelForm):
-    profile_picture = forms.ImageField(error_messages = {'invalid':("Image files only")}, widget=forms.FileInput)
+    profile_picture = forms.ImageField(error_messages = {'invalid':("Image files only")}, widget=forms.FileInput, required=False)
 
     class Meta:
         model = JobSeeker

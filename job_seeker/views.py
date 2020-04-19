@@ -2,21 +2,21 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, ListView, DetailView
 from django.contrib.auth.models import Group
 
 from employer.models import Jobs,Employer
 from job_seeker.forms import SignUpForm, CustomUserChangeForm, EditEmployeeForm, AddressForm
-from job_seeker.models import JobApplication
+from job_seeker.models import JobApplication, JobSeeker
 from job_seeker.decorators import unauthenticated_user, allowed_users
 
 def home(request):
+    
     context = {
         'total_jobs' : Jobs.objects.count(),
-        'jobs': Jobs.objects.all(),
+        'jobs': Jobs.objects.all().order_by('-posted_date'),
         'total_emp' : Employer.objects.count() -1
     }
     return render(request,'job_seeker/home.html',context)
@@ -44,15 +44,31 @@ def register(request):
 def profile(request):
     if not request.user.is_employee:
         return redirect('home')
-    return render(request, 'job_seeker/profile.html')
+    user_id = request.user.jobseeker.id
+    emp = JobSeeker.objects.get(id = user_id)
+    context = {
+        'object' : emp
+    }
+    return render(request, 'job_seeker/profile.html', context)
+
+class ProfileView(DetailView):
+    model = JobSeeker
+    template_name = 'job_seeker/profile.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_id = self.kwargs['pk']
+        context['object'] = self.model.objects.select_related('user').get(id=user_id)
+        return context
+
+
+def applications(request):
+    total_applications = JobApplication.objects.all().filter(user = request.user.jobseeker).order_by('-applied_date')
+    return total_applications
 
 @login_required
 @allowed_users(allowed_roles=['employee'])
 def edit_profile(request):
-    try:
-        total_applications = JobApplication.objects.all().filter(user = request.user.jobseeker)
-    except JobApplication.DoesNotExist:
-        return HttpResponse(status = 404)
+    total_applications = applications(request)
     context = {
         'applications' : total_applications,
         'total_applications' : total_applications.count(),
@@ -62,6 +78,7 @@ def edit_profile(request):
 @login_required
 @allowed_users(allowed_roles=['employee'])
 def edit_employee(request):
+    total_applications = applications(request)
     if request.method == 'POST':
         form1 = CustomUserChangeForm(request.POST, instance=request.user)
         form2 = EditEmployeeForm(request.POST, request.FILES, instance=request.user.jobseeker)
@@ -80,7 +97,9 @@ def edit_employee(request):
     context = {
         'form1' : form1,
         'form2' : form2,
-        'form3' : form3
+        'form3' : form3,
+        'applications' : total_applications,
+        'total_applications' : total_applications.count(),
     }
     return render(request,'job_seeker/account/edit_account.html',context)
 
@@ -130,6 +149,7 @@ class JobListView(ListView):
     model = Jobs
     template_name = 'job_seeker/jobs.html'
     paginate_by = 10
+    ordering = ['-posted_date']
 
 # ERROR PAGES - production
 def handler404(request, exception):

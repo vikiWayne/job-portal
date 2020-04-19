@@ -28,8 +28,15 @@
                                         <ul>
                                             <li><i class="ti-location-pin"></i><strong class="font-weight-700 text-black">{{object.location}}</strong><span class="text-black-light"> </span></li>
                                             <li><i class="ti-money"></i><strong class="font-weight-700 text-black">Salary</strong> {% if object.salary == '0.00' %} Salary package is not provided {% else %} {{object.salary}} {% endif %} </li>
-                                                <li><i class="ti-shield"></i><strong class="font-weight-700 text-black">Experience</strong> {% if object.experience == 0 %} Fresher  {% else %} {{object.experience}} Year Experience {% endif %} </li>
+                                            <li><i class="ti-shield"></i><strong class="font-weight-700 text-black">Experience</strong> {% if object.experience == 0 %} Fresher  {% else %} {{object.experience}} Year Experience {% endif %} </li>
                                         </ul>
+                                        {% if object.posted_by == user.employer %}
+                                            <div class="w-100 d-flex justify-content-around mb-2">
+                                            <a href=" {% url 'job_update' object.id %} " class="btn btn-info"> Edit Details</a>
+                                            <a href=" {% url 'job_delete' object.id %} " class="btn btn-danger"> Delete Job</a>
+                                            </div>
+                                        {% endif %}
+
                                     </div>
                                 </div>
                             </div>
@@ -54,11 +61,6 @@
                             <div class="dez-divider divider-2px bg-gray-dark mb-4 mt-0"></div>
                             <ul class="list-num-count no-round">
                                 <li> {{ object.qualifications }} </li>
-                                <!-- <li>The DexignLab Privacy Policy was updated on 25 June 2018.</li>
-                                <li>Who We Are and What This Policy Covers</li>
-                                <li>Remaining essentially unchanged It was popularised in the 1960s </li>
-                                <li>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</li>
-                                <li>DexignLab standard dummy text ever since</li> -->
                             </ul>
                             
                                 {% if user.is_authenticated %}

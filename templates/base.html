@@ -35,6 +35,16 @@
     <link rel="stylesheet" type="text/css" href="{% static 'plugins/revolution/revolution/css/navigation.css' %}">
     {% block stylesheet %}
     {% endblock stylesheet %}
+    <style>
+        .access a{
+            background: blue !important;
+            color: #ffffff !important;
+        }
+        .access-out a {
+            background: crimson !important;
+            color: #ffffff !important;
+        }
+    </style>
 	<!-- Revolution Navigation Style -->
 </head>
 <body id="bg">
@@ -62,14 +72,10 @@
                         <div class="extra-cell">
                             {% if user.is_authenticated %}
                                 {% if user.is_employee %}
-                                    <a href="{% url 'edit_profile' %}">  <i class="fa fa-user fa-lg" style="padding-right:20px"></i> </a>
+                                    <a href="{% url 'edit_profile' %}">  <i class="fa fa-user-circle fa-lg" style="padding-right:20px"></i> </a>
                                 {% else %}
-                                    <a href=" {% url 'employer-account' %} "> <i class="fa fa-user fa-lg" style="padding-right:20px"></i> </a>
+                                    <a href=" {% url 'employer-account' %} "> <i class="fa fa-user-circle fa-lg" style="padding-right:20px"></i> </a>
                                 {% endif %}
-                                <a href="{% url 'logout' %}"> <i class="fa fa-power-off fa-lg" style="padding-right:20px"></i></a>
-                            {% else %}
-                                <a href="{% url 'register' %}" class="site-button"><i class="fa fa-user"></i> Sign Up</a>
-                                <a href="{% url 'login' %}" class="site-button"><i class="fa fa-lock"></i> login</a>
                             {% endif %}                            
                         </div>
                     </div>
@@ -83,7 +89,7 @@
                     <!-- main nav -->
                     <div class="header-nav navbar-collapse collapse justify-content-start" id="navbarNavDropdown">
                         <ul class="nav navbar-nav">
-							<li class="active">
+							<li>
 								<a href="{% url 'home' %}">Home</a>
                             </li>
                             
@@ -94,15 +100,28 @@
 									<li><a href="{% url 'employers' %}" class="dez-page">employers</a></li>
 								</ul>
                             </li>
-                            {% if user.is_authenticated and not user.is_employee %}
-                                <li>
-                                    <a href="#">For Employers <i class="fa fa-chevron-down"></i></a>
-                                    <ul class="sub-menu">
-                                        <li><a href="#" class="dez-page">Browse Candidates</a></li>
-                                    </ul>
+                            {% if user.is_authenticated %}
+                                {% if not user.is_employee %}
+                                    <li>
+                                        <a href="#">For Employers <i class="fa fa-chevron-down"></i></a>
+                                        <ul class="sub-menu">
+                                            <li><a href="{% url 'employer-applicants' %}" class="dez-page">Browse Candidates</a></li>
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                                <li class="access-out">
+                                    <a href="{% url 'logout' %}">Logout </a>
                                 </li>
+                            {% else %}
+                                <li class="access">
+                                    <a href="{% url 'login' %}"> Login </a>
+                                </li>
+                                <li class="access">
+                                    <a href="{% url 'register' %}"> Sign Up</a>
+                                </li>
+                                
                             {% endif %}
-                            
+
 						</ul>			
                     </div>
                 </div>
@@ -114,7 +133,7 @@
  
         {% if messages %}
             {% for message in messages %}
-                <div class="{{ message.tags }}">
+                <div class="alert alert-{{ message.tags }}">
                     {{ message }}
                 </div>
                 {% endfor %}
