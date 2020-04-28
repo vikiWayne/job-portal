@@ -55,7 +55,7 @@ class JobSeeker(models.Model):
 
 class Resumes(models.Model):
     jobseeker = models.OneToOneField(JobSeeker, on_delete=models.CASCADE, related_name = 'resumes')
-    resume = models.FileField(null=True, blank=True)
+    resume = models.FileField(null=True, blank=True, upload_to='resumes')
 
     def __str__(self):
         return f'{ self.jobseeker.user.email } - Resume'
