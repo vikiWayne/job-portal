@@ -9,7 +9,7 @@ Steps:
     ###### The requirements.txt will install the latest version od django. if you want a specific version, you are free to edit the file !
 3. Configure your .env variables
 4. Rename your project with `python manage.py rename <yourprojectname> <newprojectname>` - if needed
-5. After successfull migration, you need to create two groups in Group model named 'employee' and 'employer' either by going to admin panel or using shell
+## 5. After successfull migration, you need to create two groups in Group model named 'employee' and 'employer' either by going to admin panel or using shell
 
 This project includes:
 
