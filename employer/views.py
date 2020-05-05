@@ -146,12 +146,14 @@ class JobDetailView(DetailView):
             job = self.model.objects.get(id=job_id)
         except Jobs.DoesNotExist:
             pass
-        if self.request.user.is_employee:
+
+        if self.request.user.is_authenticated and self.request.user.is_employee:
             try:
                 applied_job = JobApplication.objects.filter(user=self.request.user.jobseeker).get(jobs = job)
                 context['applied_job'] = applied_job.jobs
             except JobApplication.DoesNotExist:
                 pass
+
         context['object'] = job
         return context
 

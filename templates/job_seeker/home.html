@@ -235,55 +235,69 @@
     <div class="section-full bg-white content-inner-2">
         <div class="container">
             <div class="d-flex job-title-bx section-head">
-                <div class="mr-auto">
-                    <h2 class="m-b5">Recent Jobs</h2>
-                    <h6 class="fw4 m-b0">20+ Recently Added Jobs</h5>
+                <div class="mr-auto bg-primary p-4 w-100" style="border-radius: 12px;">
+                    <h2 class="m-b5 text-capitalize text-white">recently posted jobs</h2>
                 </div>
-                <div class="align-self-end">
-                    <a href="{% url 'jobs' %}" class="site-button button-sm">Browse All Jobs <i class="fa fa-long-arrow-right"></i></a>
-                </div>
+                {% if jobs %}
+                    <div class="align-self-end">
+                        <a href="{% url 'jobs' %}" class="site-button button-sm">Browse All Jobs <i class="fa fa-long-arrow-right"></i></a>
+                    </div>
+                {% endif %}
             </div>
-            <div class="row">
-                <div class="col-lg-9">
-                    <ul class="post-job-bx">
-                        {% for job in jobs %}
-                            <li>
-                                <a href="{% url 'job-detail' job.id %}">
-                                    <div class="d-flex m-b30">
-                                        <div class="job-post-company">
-                                            <span><img src="{% static 'images/job-icon.webp' %}"/></span>
-                                        </div>
-                                        <div class="job-post-info">
-                                            <h4>{{job.title}}</h4>
-                                            <ul>
-                                                <li class="text-capitalize"><i class="fa fa-map-marker"></i> {{ job.location }} </li>
-                                                <li class="text-capitalize"><i class="fa fa-bookmark-o"></i> {{ job.type }} </li>
-                                                <li class="text-capitalize"><i class="fa fa-clock-o"></i> {{ job.posted_date|date:"F d, Y" }} </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex">
-                                        <div class="job-time mr-auto">
-                                            <span> <i class="fa fa-user"> </i> {{ job.posted_by.user.first_name }}</span>
-                                        </div>
-                                        <div style="color: #312f30; font-family: rubik; font-size: 15px;">
-                                            <span> {% if not job.experience %} Fresher {% else %} {{job.experience}} Year experience {% endif %} </span>
-                                        </div>
-                                    </div>
-                                    <!-- <span class="post-like fa fa-heart-o"></span> -->
-                                </a>
-                            </li>
-                        {% endfor %}
 
-                    </ul>
-                    <!-- <div class="m-t30">
-                        <div class="d-flex">
-                            <a class="site-button button-sm mr-auto" href="#"><i class="ti-arrow-left"></i> Prev</a>
-                            <a class="site-button button-sm" href="#">Next <i class="ti-arrow-right"></i></a>
-                        </div>
-                    </div> -->
+
+            {% if jobs %}
+                <div class="row">
+                    <div class="col-lg-9">
+                        <ul class="post-job-bx">
+                            {% for job in jobs %}
+                                <li>
+                                    <a href="{% url 'job-detail' job.id %}">
+                                        <div class="d-flex m-b30">
+                                            <div class="job-post-company">
+                                                <span><img src="{% static 'images/job-icon.webp' %}"/></span>
+                                            </div>
+                                            <div class="job-post-info">
+                                                <h4>{{job.title}}</h4>
+                                                <ul>
+                                                    <li class="text-capitalize"><i class="fa fa-map-marker"></i> {{ job.location }} </li>
+                                                    <li class="text-capitalize"><i class="fa fa-bookmark-o"></i> {{ job.type }} </li>
+                                                    <li class="text-capitalize"><i class="fa fa-clock-o"></i> {{ job.posted_date|date:"F d, Y" }} </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="job-time mr-auto">
+                                                <span> <i class="fa fa-user"> </i> {{ job.posted_by.user.first_name }}</span>
+                                            </div>
+                                            <div style="color: #312f30; font-family: rubik; font-size: 15px;">
+                                                <span> {% if not job.experience %} Fresher {% else %} {{job.experience}} Year experience {% endif %} </span>
+                                            </div>
+                                        </div>
+                                        <!-- <span class="post-like fa fa-heart-o"></span> -->
+                                    </a>
+                                </li>
+                            {% endfor %}
+
+                        </ul>
+                        <!-- <div class="m-t30">
+                            <div class="d-flex">
+                                <a class="site-button button-sm mr-auto" href="#"><i class="ti-arrow-left"></i> Prev</a>
+                                <a class="site-button button-sm" href="#">Next <i class="ti-arrow-right"></i></a>
+                            </div>
+                        </div> -->
+                    </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-md-12 mr-auto">
+                        <div class="mr-auto w-100 text-center">
+                            <h5 class="text-capitalize text-danger"> No jobs available </h5>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
         </div>
     </div>
     <!-- Our Job END -->	
