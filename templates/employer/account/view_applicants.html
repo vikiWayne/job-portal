@@ -50,14 +50,17 @@
 {% endblock stylesheet %}
 
 {% block profile_content %}
+
 <div>
     <a href="{% url 'employer-applicants' %}" class="btn btn-primary"> <i class="ni ni-bold-left"></i> Back</a>
-
+    <a href="{% url 'job_update' job.id %}" class="btn btn-danger text-uppercase" id="close_job"> close this job </a>
+    <a href="{% url 'exam' job.id %}" class="btn btn-success text-capitalize" id="close_job">Create Exam</a>
 </div>
+
 <div class="p-3">
     <div class="pb-3">
         <h3>Applicants for <span class="job-title">{{ job.title }}</span> </h3>
-            <small>Total Applications Received- <span class="circle"> {{ applicants.count }}</span>
+            <small>Total Applications Received - <span class="circle"> {{ applicants.count }}</span>
          </small>
     </div>
     {% if applicants %}

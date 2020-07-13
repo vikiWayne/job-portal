@@ -84,3 +84,15 @@ class JobApplication(models.Model):
 
     def __str__(self):
         return f'{ self.user.user.first_name } - { self.jobs.title }- Applications'
+
+
+class ExamResult(models.Model):
+    job = models.ForeignKey(Jobs, on_delete=models.CASCADE, related_name='examResult')
+    employee = models.ForeignKey(JobSeeker, on_delete=models.CASCADE, related_name='examResult')
+    marks = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ['job', 'employee']
+
+    def __str__(self):
+        return f'{self.job.title}/{self.employee.user.first_name} - Marks'

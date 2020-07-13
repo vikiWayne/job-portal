@@ -8,8 +8,8 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth.models import Group
 
 
-from employer.forms import PostJobForm, EmployerRegistrationForm, ProfileUpadteForm
-from employer.models import Employer, Jobs
+from employer.forms import PostJobForm, EmployerRegistrationForm, ProfileUpadteForm, ExamCreateForm
+from employer.models import Employer, Jobs, ExamQuestion
 from job_seeker.models import User, JobApplication
 from job_seeker.decorators import unauthenticated_user, allowed_users
 from job_seeker.forms import CustomUserChangeForm
@@ -60,7 +60,8 @@ def post_job(request):
 class JobUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     model = Jobs
     template_name = 'employer/account/post-job.html'
-    fields = ['title', 'description','qualifications','experience', 'salary', 'location', 'type']
+    fields = ['title', 'description','qualifications','experience', 'salary', 'location', 'type', 'job_expiry']
+    success_url = '/'
     
     def form_valid(self, form):
         form.instance.posted_by = self.request.user.employer
@@ -97,11 +98,12 @@ def view_applicants(request):
 class GetApplicants(LoginRequiredMixin, ListView):
     model = JobApplication
     template_name = 'employer/account/view_applicants.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         job_id = self.kwargs['pk']
         try:
-            job = Jobs.objects.values('title').filter(posted_by = self.request.user.employer.id).get(id=job_id)
+            job = Jobs.objects.values('title', 'id').filter(posted_by = self.request.user.employer.id).get(id=job_id)
             context['job'] = job
         except Jobs.DoesNotExist:
             pass
@@ -184,3 +186,27 @@ class JobsByEmployerView(ListView):
         context['object_list'] = self.model.objects.all().filter(posted_by = employer).order_by('-posted_date')
         return context
 
+
+@login_required
+@allowed_users(allowed_roles=['employer'])
+def ExamCreateView(request, job_id):
+    try:
+        job = Jobs.objects.get(id=job_id) 
+        count = ExamQuestion.objects.filter(job=job).count()
+    except Jobs.DoesNotExist:
+        return redirect('employer-applicants')
+    if request.method == 'POST':
+        form = ExamCreateForm(request.POST)
+        if form.is_valid():
+            job_form = form.save(commit=False)
+            job_form.job = job
+            job_form.save()
+            return redirect('exam',job_id=job.id)
+    if request.method == 'GET':
+        form = ExamCreateForm()
+    context = {
+        'form'  : form,
+        'job' : job,
+        'count' : count+1
+    }
+    return render(request, 'employer/exam/exam.html', context)

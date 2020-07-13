@@ -1,5 +1,5 @@
 from django.contrib import admin
-from job_seeker.models import User,JobSeeker, Resumes, Address, JobApplication
+from job_seeker.models import User,JobSeeker, Resumes, Address, JobApplication, ExamResult
 from django.contrib.auth.admin import UserAdmin
 from job_seeker.forms import SignUpForm, CustomUserChangeForm
 from django.contrib.auth.models import Group
@@ -8,6 +8,7 @@ admin.site.register(Resumes)
 admin.site.register(Address)
 admin.site.register(JobApplication)
 admin.site.register(JobSeeker)
+admin.site.register(ExamResult)
 
 class CustomAdmin(UserAdmin):
     add_form = SignUpForm

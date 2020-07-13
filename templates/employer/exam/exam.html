@@ -1,0 +1,111 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>exam</title>
+    {% load static %}
+    <link href="{% static 'exam/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'exam/css/style.css' %}" rel="stylesheet" type="text/css" />
+    <style>
+        #num-question-btn{
+            margin-top:10px;
+        }
+        a,a:hover{
+            text-decoration: none;
+        }
+        .text {
+            padding-left: 55px;
+            font-size: 20px
+        }
+        .mt-5{
+            margin-top: 25px;
+        }
+        .mt-2 {
+            margin-top: 10px;
+        }
+        .success{
+            border: .5px solid #6dd06d;
+        }
+    </style>
+</head>
+<body>
+    <!-- <nav style="background-color: #2e6da4;width:100%;color:white; height: 50px;">
+        <div>
+            <p style=";" class="text-capitalize"></p>
+        </div>
+    </nav> -->
+    <nav style="background-color: #2e6da4;width:100%;color:white">
+        <div class="row">
+        <span class="logo navbar-brand text-capitalize col-md-4 text" >
+            {{ job.title }} - Exam Questons
+        </span>
+        
+        <span class="col-md-8">
+            <a href="{% url 'employer-applicants' %}" class="text navbar-brand" style="text-decoration: none;color:white">Home</a>
+        </span>
+    </nav>
+
+    <div class="container mt-5">
+        {{ form.non_field_errors }}
+        <p>Question # {{ count }}</p>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="row pb-2 mt-5">
+                <div class="col-md-12">
+                    {{ form.question|attr:'class:form-control'|attr:'placeholder:Question' }}
+                    <small class="text-danger">
+                        {{ form.question.errors }}
+                    </small>
+                </div>
+            </div>
+
+            <div class="row pb-2 mt-2">
+                <div class="col-md-6">
+                    {{ form.option1|attr:'class:form-control'|attr:'placeholder:Option 1' }}
+                    <small class="text-danger">
+                        {{ form.option1.errors }}
+                    </small>
+                </div>
+                <div class="col-md-6">
+                    {{ form.option2|attr:'class:form-control'|attr:'placeholder:Option 2' }}
+                    <small class="text-danger">
+                        {{ form.option2.errors }}
+                    </small>
+                </div>
+            </div>
+
+            <div class="row pb-2 mt-2">
+                <div class="col-md-6">
+                    {{ form.option3|attr:'class:form-control'|attr:'placeholder:Option 3' }}
+                    <small class="text-danger">
+                        {{ form.option3.errors }}
+                    </small>
+                </div>
+                <div class="col-md-6">
+                    {{ form.option4|attr:'class:form-control'|attr:'placeholder:Option 4' }}
+                    <small class="text-danger">
+                        {{ form.option4.errors }}
+                    </small>
+                </div>
+            </div>
+
+            <div class="row pb-2 mt-2">
+                <div class="col-md-12">
+                    {{ form.answer|attr:'class:form-control success'|attr:'placeholder:Answer'}}
+                    <small class="text-danger">
+                        {{ form.type.errors }}
+                    </small>
+                </div>
+            </div>
+            <button class="btn btn-primary mt-5">Add Question</button>
+            <a href="{% url 'applicants' job.id %}" class="btn btn-danger mt-5">Finish</a>
+        </form>
+    </div>
+
+    <script src="{% static 'js/jquery.min.js' %} "></script><!-- JQUERY.MIN JS -->
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %} "></script><!-- BOOTSTRAP.MIN JS -->
+
+</body>
+</html>

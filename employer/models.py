@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-
 class Employer(models.Model):
     user = models.OneToOneField('job_seeker.User', on_delete=models.CASCADE, related_name='employer')
     location = models.CharField(max_length=150, help_text='Employer location')
@@ -28,6 +27,19 @@ class Jobs(models.Model):
     type = models.CharField(choices=JOB_TYPE , max_length=50)
     posted_by = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name='jobs')
     posted_date = models.DateTimeField(auto_now=True)
+    job_expiry = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{ self.title }'
+
+class ExamQuestion(models.Model):
+    job         = models.ForeignKey(Jobs, on_delete=models.CASCADE, related_name='examQuestion')
+    question    = models.TextField(max_length=200)
+    option1     = models.CharField(max_length=50)
+    option2     = models.CharField(max_length=50)
+    option3     = models.CharField(max_length=50)
+    option4     = models.CharField(max_length=50)
+    answer      = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return f'{ self.job.title } - Questions'

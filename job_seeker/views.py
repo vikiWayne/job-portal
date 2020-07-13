@@ -60,7 +60,6 @@ class ProfileView(DetailView):
         context['object'] = self.model.objects.select_related('user').get(id=user_id)
         return context
 
-
 def applications(request):
     total_applications = JobApplication.objects.all().filter(user = request.user.jobseeker).order_by('-applied_date')
     return total_applications
@@ -69,9 +68,11 @@ def applications(request):
 @allowed_users(allowed_roles=['employee'])
 def edit_profile(request):
     total_applications = applications(request)
+    form = ResumeForm()
     context = {
         'applications' : total_applications,
         'total_applications' : total_applications.count(),
+        'form' : form
             }
     return render(request,'job_seeker/account/my_account.html',context)
 
@@ -105,6 +106,11 @@ def edit_employee(request):
     }
     return render(request,'job_seeker/account/edit_account.html',context)
 
+@login_required
+@allowed_users(allowed_roles=['employee'])
+def upload_resume(request):
+    pass
+    # return render(request, 'job_seeker/account/resume.html', context)
 
 def SearchResultsView(request):
     try:
@@ -149,6 +155,7 @@ class CancelJobApplication(LoginRequiredMixin, View):
 
 class JobListView(ListView):
     model = Jobs
+    queryset = Jobs.objects.all().filter(job_expiry = True)
     template_name = 'job_seeker/jobs.html'
     paginate_by = 10
     ordering = ['-posted_date']
