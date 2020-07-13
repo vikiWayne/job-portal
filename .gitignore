@@ -5,7 +5,8 @@ job_env
 .DS_Store
 *.sqlite3
 *.env
-media/*
+media/employees
+media/resumes
 # Accept these files in the repository
 !.gitignore
 !.travis.yml
