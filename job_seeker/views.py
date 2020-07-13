@@ -8,7 +8,7 @@ from django.views.generic import UpdateView, ListView, DetailView
 from django.contrib.auth.models import Group
 
 from employer.models import Jobs,Employer
-from job_seeker.forms import SignUpForm, CustomUserChangeForm, EditEmployeeForm, AddressForm
+from job_seeker.forms import SignUpForm, CustomUserChangeForm, EditEmployeeForm, AddressForm, ResumeForm
 from job_seeker.models import JobApplication, JobSeeker
 from job_seeker.decorators import unauthenticated_user, allowed_users
 
@@ -74,6 +74,8 @@ def edit_profile(request):
         'total_applications' : total_applications.count(),
             }
     return render(request,'job_seeker/account/my_account.html',context)
+
+
 
 @login_required
 @allowed_users(allowed_roles=['employee'])

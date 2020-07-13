@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 
-from job_seeker.models import User, JobSeeker, Address
+from job_seeker.models import User, JobSeeker, Address, Resumes
 
 class SignUpForm(UserCreationForm):
     class Meta:
@@ -25,6 +25,11 @@ class AddressForm(ModelForm):
     class Meta:
         model = Address
         fields = ('house_name', 'street', 'city', 'district', 'state', 'pin')
+
+class ResumeForm(ModelForm):
+    class Meta:
+        model = Resumes
+        fields = ('resume',)
 
 class CustomAuthenticationForm(AuthenticationForm):
     error_messages = {

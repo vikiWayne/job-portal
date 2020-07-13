@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
 from job_seeker.managers import CustomUserManager
+from job_seeker.validators import validate_file_extension
 from employer.models import Jobs
 from PIL import Image
 
@@ -55,7 +56,7 @@ class JobSeeker(models.Model):
 
 class Resumes(models.Model):
     jobseeker = models.OneToOneField(JobSeeker, on_delete=models.CASCADE, related_name = 'resumes')
-    resume = models.FileField(null=True, blank=True, upload_to='resumes')
+    resume = models.FileField(null=True, blank=True, upload_to='resumes', validators=[validate_file_extension])
 
     def __str__(self):
         return f'{ self.jobseeker.user.email } - Resume'

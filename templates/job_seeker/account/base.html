@@ -240,7 +240,10 @@
 
                       <div class="wrapper">
                         <div class="file-upload">
-                          <input type="file" />
+                          <form method="POST">
+                            {% csrf_token %}
+                            <input type="file" name="resume" />
+                          </form>
                           <i class="fa fa-arrow-up" style="font-size: 20px;cursor: grab;"></i>
                         </div>
                       </div>
