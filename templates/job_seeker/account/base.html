@@ -41,6 +41,42 @@
       span {
     font-size: 12px;
   }
+  .wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wrapper .file-upload {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 4px solid #FFFFFF;
+  overflow: hidden;
+  background-image: linear-gradient(to bottom, #2590EB 50%, #FFFFFF 50%);
+  background-size: 100% 200%;
+  transition: all 1s;
+  color: #FFFFFF;
+  font-size: 100px;
+}
+.wrapper .file-upload input[type='file'] {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.wrapper .file-upload:hover {
+  background-position: 0 -100%;
+  color: #2590EB;
+}
   </style>
   {% block stylesheet %}
   {% endblock stylesheet %}
@@ -200,15 +236,21 @@
                     <div class="col m-auto">
                       <h5 class="card-title text-uppercase text-dark mb-0">Upload Resume</h5>
                     </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
-                        <i class="ni ni-cloud-upload-96"></i>
+                    <div class="col-auto">     
+
+                      <div class="wrapper">
+                        <div class="file-upload">
+                          <input type="file" />
+                          <i class="fa fa-arrow-up" style="font-size: 20px;cursor: grab;"></i>
+                        </div>
                       </div>
+
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
 
 
             <div class="col-xl-3 col-md-6">
