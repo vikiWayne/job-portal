@@ -27,10 +27,10 @@ class Jobs(models.Model):
     type = models.CharField(choices=JOB_TYPE , max_length=50)
     posted_by = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name='jobs')
     posted_date = models.DateTimeField(auto_now=True)
-    job_expiry = models.BooleanField(default=True)
+    is_opened = models.BooleanField(default=True)
 
     def __str__(self):
-        return f'{ self.title }'
+        return f'{ self.title }- { self.is_opened }'
 
 class ExamQuestion(models.Model):
     job         = models.ForeignKey(Jobs, on_delete=models.CASCADE, related_name='examQuestion')

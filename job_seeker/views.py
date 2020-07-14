@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import UpdateView, ListView, DetailView
 from django.contrib.auth.models import Group
 
-from employer.models import Jobs,Employer
+from employer.models import Jobs,Employer, ExamQuestion
 from job_seeker.forms import SignUpForm, CustomUserChangeForm, EditEmployeeForm, AddressForm, ResumeForm
 from job_seeker.models import JobApplication, JobSeeker
 from job_seeker.decorators import unauthenticated_user, allowed_users
@@ -61,18 +61,20 @@ class ProfileView(DetailView):
         return context
 
 def applications(request):
-    total_applications = JobApplication.objects.all().filter(user = request.user.jobseeker).order_by('-applied_date')
+    total_applications = JobApplication.objects.filter(user = request.user.jobseeker).order_by('-applied_date')
     return total_applications
 
 @login_required
 @allowed_users(allowed_roles=['employee'])
 def edit_profile(request):
     total_applications = applications(request)
+    exams = ''
     form = ResumeForm()
     context = {
         'applications' : total_applications,
         'total_applications' : total_applications.count(),
-        'form' : form
+        'form' : form,
+        'exams' : exams
             }
     return render(request,'job_seeker/account/my_account.html',context)
 
@@ -155,7 +157,7 @@ class CancelJobApplication(LoginRequiredMixin, View):
 
 class JobListView(ListView):
     model = Jobs
-    queryset = Jobs.objects.all().filter(job_expiry = True)
+    queryset = Jobs.objects.all().filter(is_opened = True)
     template_name = 'job_seeker/jobs.html'
     paginate_by = 10
     ordering = ['-posted_date']

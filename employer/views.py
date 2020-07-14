@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import login, authenticate
@@ -60,8 +61,9 @@ def post_job(request):
 class JobUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     model = Jobs
     template_name = 'employer/account/post-job.html'
-    fields = ['title', 'description','qualifications','experience', 'salary', 'location', 'type', 'job_expiry']
-    success_url = '/'
+    fields = ['title', 'description','qualifications','experience', 'salary', 'location', 'type', 'is_opened']
+    # success_url = '/'
+
     
     def form_valid(self, form):
         form.instance.posted_by = self.request.user.employer
@@ -73,6 +75,9 @@ class JobUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
             return True
         return False
 
+    def get_success_url(self):
+        return reverse_lazy('applicants', kwargs={'pk': self.object.pk})
+    
 class JobDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Jobs
     success_url = '/'
@@ -103,7 +108,7 @@ class GetApplicants(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         job_id = self.kwargs['pk']
         try:
-            job = Jobs.objects.values('title', 'id').filter(posted_by = self.request.user.employer.id).get(id=job_id)
+            job = Jobs.objects.values('title', 'id', 'is_opened').filter(posted_by = self.request.user.employer.id).get(id=job_id)
             context['job'] = job
         except Jobs.DoesNotExist:
             pass
@@ -191,7 +196,10 @@ class JobsByEmployerView(ListView):
 @allowed_users(allowed_roles=['employer'])
 def ExamCreateView(request, job_id):
     try:
-        job = Jobs.objects.get(id=job_id) 
+        job = Jobs.objects.get(id=job_id)
+        if job.is_opened:
+            print('\n\n\n', job.is_opened)
+            return redirect('applicants', pk=job.id) 
         count = ExamQuestion.objects.filter(job=job).count()
     except Jobs.DoesNotExist:
         return redirect('employer-applicants')

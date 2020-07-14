@@ -41,29 +41,36 @@
 <h1>Your job postings</h1>
 {% if jobs %}
   {% for job in jobs %}
+
+    <div class="row">
       <div class="job">
-          <div class="job-title" data-id="{{ job.id }}">
-              <span>Job title</span>
-              <a href="{% url 'job-detail' job.id %}" target="_blank"> <h3> {{ job.title }} </h3> </a>
-          </div>
+
+        <div class="job-title col-md-4" data-id="{{ job.id }}">
+          <span>Job title</span>
+          <a href="{% url 'job-detail' job.id %}" target="_blank" class="text-capitalize"> <h3> {{ job.title }} </h3> </a>
+        </div>
           
-          <div class="auto">
-              <span>Posted on </span>
-              <h3> {{ job.posted_date|date:"F d, Y"}} </h3>
-          </div>
-          
-          <div class="auto">
-              <a href="{% url 'applicants' job.id %}" class="text-right link"> view applicants</a>
-          </div>
-          <div class="auto">
-            <span>Job status</span>
-            {% if job.job_expiry %}
-             <p class="text-success font-weight-bold"> Opened</p>
-            {% else %}
-             <p class="text-danger font-weight-bold">Closed</p>
-            {% endif %}
-          </div>
+        <div class="auto col-md-3">
+          <span>Posted on </span>
+          <h3> {{ job.posted_date|date:"F d, Y"}} </h3>
+        </div>
+            
+        <div class="auto col-md-3">
+          <a href="{% url 'applicants' job.id %}" class="text-right text-primary"> view applicants</a>
+        </div>
+
+        <div class="auto col-md-2">
+        <span>Job status</span>
+          {% if job.is_opened %}
+            <p class="text-success font-weight-bold"> Opened</p>
+          {% else %}
+            <p class="text-danger font-weight-bold">Closed</p>
+          {% endif %}
+        </div>
+
+      </div>
     </div>
+    
   {% endfor %}
 {% else %}
 <div class="p-5">

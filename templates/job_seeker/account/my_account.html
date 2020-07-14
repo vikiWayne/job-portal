@@ -7,7 +7,7 @@
 {% block stylesheet %}
 <style>
   .job{
-    width: 80%;
+    width: 100%;
     background: #ffffff;
     padding: 3%;
     border-radius: 20px;
@@ -37,20 +37,40 @@
   <div>
     {% if applications %}
       {% for job in applications %}
-        <div class="job">
-          <div class="job-title">
+
+        <div class="job row">
+          <div class="job-title col-md-3">
             <span>Job title</span>
-              <a href="{% url 'job-detail' job.jobs.id %}"> <h3> {{ job.jobs.title }} </h3> </a>
+              <a href="{% url 'job-detail' job.jobs.id %}" class="text-capitalize"> <h3> {{ job.jobs.title }} </h3> </a>
           </div>
-          <div class="employer">
+          <div class="employer col-md-2">
             <span>Posted by </span>
-            <a href="{% url 'employer-detail' job.jobs.posted_by.id %}"> <h3> {{ job.jobs.posted_by.user.first_name }} </h3> </a>
+            <a href="{% url 'employer-detail' job.jobs.posted_by.id %}" class="text-capitalize"> <h3> {{ job.jobs.posted_by.user.first_name }} </h3> </a>
           </div>
-          <div class="date">
+          <div class="date col-md-2">
             <span>Applied on</span>
             <h3> {{ job.applied_date|date:"F d, Y"}} </h3>
           </div>
+          <div class="auto col-md-2">
+            <span>Job status</span>
+              {% if job.jobs.is_opened %}
+                <p class="text-success font-weight-bold text-capitalize">opened</p>
+              {% else %}
+                <p class="text-danger font-weight-bold text-capitalize">closed</p>
+              {% endif %}
+            </div>
+
+          <div class="auto col-md-3">
+            {% if job.jobs.id in exams %}
+              <p>Exam is available</p>
+              {{ job.jobs.id }} {{ exams }}
+            {% else %}
+              <p> {{ job.jobs.id }} </p>
+              {{ exams }}
+            {% endif %}
+          </div>
         </div>
+
       {% endfor %}
       {% else %}
         <div>
