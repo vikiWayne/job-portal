@@ -64,7 +64,7 @@
                             </ul>
                             
                                 {% if user.is_authenticated %}
-                                    {% if user.is_employee %}
+                                    {% if user.is_employee and object.is_opened %}
                                         {% if object == applied_job %}
                                             <button class="site-button" id="cancel" data-id="{{ object.id }}" style="background: #f30541 !important;">Cancel Application</button>
                                         {% else %}
@@ -73,6 +73,11 @@
                                     {% endif %}
                                 {% else %}
                                     <a href="{% url 'login' %}" class="site-button" style="background-color:#343a40 !important">Login to Apply</a>
+                                {% endif %}
+                                {% if object.is_opened == False %}
+                                    <div class="bg-danger text-uppercase w-100 text-center rounded text-white">
+                                        <p class="p-2">This job is closed</p>
+                                    </div>
                                 {% endif %}
                         </div>
                     </div>

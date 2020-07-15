@@ -22,9 +22,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
   <meta name="author" content="Creative Tim">
-  <title> 
-    {% block title %} 
-    {% endblock title %} 
+  <title>
+    {% block title %}
+    {% endblock title %}
   </title>
   <!-- Favicon -->
   <!-- <link rel="icon" href="{% static 'my_account/assets/img/brand/favicon.png' %}" type="image/png"> -->
@@ -32,51 +32,55 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
   <!-- Icons -->
   <link rel="stylesheet" href="{% static 'my_account/assets/vendor/nucleo/css/nucleo.css' %}" type="text/css">
-  <link rel="stylesheet" href="{% static 'my_account/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'my_account/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}"
+    type="text/css">
   <!-- Page plugins -->
   <!-- Argon CSS -->
   <link rel="stylesheet" href="{% static 'my_account/assets/css/argon.css' %}" type="text/css">
   <style>
- 
-      span {
-    font-size: 12px;
-  }
-  .wrapper {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.wrapper .file-upload {
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 4px solid #FFFFFF;
-  overflow: hidden;
-  background-image: linear-gradient(to bottom, #2590EB 50%, #FFFFFF 50%);
-  background-size: 100% 200%;
-  transition: all 1s;
-  color: #FFFFFF;
-  font-size: 100px;
-}
-.wrapper .file-upload input[type='file'] {
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-.wrapper .file-upload:hover {
-  background-position: 0 -100%;
-  color: #2590EB;
-}
+    span {
+      font-size: 12px;
+    }
+
+    .wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wrapper .file-upload {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 4px solid #FFFFFF;
+      overflow: hidden;
+      background-image: linear-gradient(to bottom, #2590EB 50%, #FFFFFF 50%);
+      background-size: 100% 200%;
+      transition: all 1s;
+      color: #FFFFFF;
+      font-size: 100px;
+    }
+
+    .wrapper .file-upload input[type='file'] {
+      height: 50px;
+      width: 50px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .wrapper .file-upload:hover {
+      background-position: 0 -100%;
+      color: #2590EB;
+    }
   </style>
   {% block stylesheet %}
   {% endblock stylesheet %}
@@ -110,6 +114,12 @@
                 <span class="nav-link-text">Edit profile </span>
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="ni ni-single-copy-04 text-blue"></i>
+                <span class="nav-link-text">Exams </span>
+              </a>
+            </li>
           </ul>
           <!-- Divider -->
           <hr class="my-3">
@@ -135,7 +145,8 @@
           <ul class="navbar-nav align-items-center  ml-md-auto ">
             <li class="nav-item d-xl-none">
               <!-- Sidenav toggler -->
-              <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin" data-target="#sidenav-main">
+              <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin"
+                data-target="#sidenav-main">
                 <div class="sidenav-toggler-inner">
                   <i class="sidenav-toggler-line"></i>
                   <i class="sidenav-toggler-line"></i>
@@ -149,7 +160,8 @@
 
           <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
             <li class="nav-item dropdown">
-              <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
                 <div class="media align-items-center">
                   <span class="avatar avatar-sm rounded-circle">
                     <img alt="Image placeholder" src=" {{ user.jobseeker.profile_picture.url }} ">
@@ -211,7 +223,7 @@
             <div class="col-xl-3 col-md-6">
               <div class="card card-stats">
                 <div class="card-body">
-                  <a href=" {% url 'emp_view_profile'%} " target="_blank" >
+                  <a href=" {% url 'emp_view_profile'%} " target="_blank">
                     <div class="row">
                       <div class="col">
                         <h5 class="card-title text-uppercase text-muted mb-0">Profile</h5>
@@ -236,7 +248,7 @@
                     <div class="col m-auto">
                       <h5 class="card-title text-uppercase text-dark mb-0">Upload Resume</h5>
                     </div>
-                    <div class="col-auto">     
+                    <div class="col-auto">
 
                       <div class="wrapper">
                         <div class="file-upload">
@@ -262,7 +274,8 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Expolre posted jobs</h5>
-                      <span class="h2 font-weight-bold mb-0"> <a href="{% url 'jobs' %}" style="font-size: 1rem !important;color: #32325d;" target="_blank"> View jobs </a> </span>
+                      <span class="h2 font-weight-bold mb-0"> <a href="{% url 'jobs' %}"
+                          style="font-size: 1rem !important;color: #32325d;" target="_blank"> View jobs </a> </span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -283,11 +296,11 @@
     <!-- Page content -->
     <div class="container-fluid mt-5">
 
-        {% block profile_content %}
-        {% endblock profile_content %}
-        
+      {% block profile_content %}
+      {% endblock profile_content %}
+
       <!-- Footer -->
-       <!--  <footer class="footer pt-0">
+      <!--  <footer class="footer pt-0">
           <div class="row align-items-center justify-content-lg-between">
             <div class="col-lg-6">
               <div class="copyright text-center  text-lg-left  text-muted">

@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import View
-from django.views.generic import UpdateView, ListView, DetailView
+from django.views.generic import UpdateView, ListView, DetailView, TemplateView
 from django.contrib.auth.models import Group
 
 from employer.models import Jobs,Employer, ExamQuestion
@@ -15,8 +15,8 @@ from job_seeker.decorators import unauthenticated_user, allowed_users
 def home(request):
     
     context = {
-        'total_jobs' : Jobs.objects.count(),
-        'jobs': Jobs.objects.all().order_by('-posted_date'),
+        'total_jobs' : Jobs.objects.filter(is_opened=True).count(),
+        'jobs': Jobs.objects.filter(is_opened=True).order_by('-posted_date'),
         'total_emp' : Employer.objects.count() -1
     }
     return render(request,'job_seeker/home.html',context)
@@ -51,7 +51,7 @@ def profile(request):
     }
     return render(request, 'job_seeker/profile.html', context)
 
-class ProfileView(DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     model = JobSeeker
     template_name = 'job_seeker/profile.html'
     def get_context_data(self, **kwargs):
@@ -68,13 +68,11 @@ def applications(request):
 @allowed_users(allowed_roles=['employee'])
 def edit_profile(request):
     total_applications = applications(request)
-    exams = ''
     form = ResumeForm()
     context = {
         'applications' : total_applications,
         'total_applications' : total_applications.count(),
         'form' : form,
-        'exams' : exams
             }
     return render(request,'job_seeker/account/my_account.html',context)
 
@@ -134,19 +132,20 @@ class JobApplyView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         job_id = request.POST.get('job_id')
         job = get_object_or_404(Jobs,id=job_id)
-        print(job,'\n\n\n')
-        try:
-            self.model.objects.get(user=self.request.user.jobseeker, jobs=job)
-        except self.model.DoesNotExist:
-             self.model.objects.create(user=self.request.user.jobseeker, jobs=job)
-        return HttpResponse(status = 201)
+        if job.is_opened:
+            print(job,'\n\n\n')
+            try:
+                self.model.objects.get(user=self.request.user.jobseeker, jobs=job)
+            except self.model.DoesNotExist:
+                self.model.objects.create(user=self.request.user.jobseeker, jobs=job)
+            return HttpResponse(status = 201)
+        return HttpResponse(status = 403)
 
 class CancelJobApplication(LoginRequiredMixin, View):
     model = JobApplication
     def post(self, request, *args, **kwargs):
         job_id = request.POST.get('job_id')
         job = get_object_or_404(Jobs,id=job_id)
-
         try:
             applid_job = self.model.objects.get(user=self.request.user.jobseeker, jobs=job)
             if applid_job:
@@ -162,16 +161,24 @@ class JobListView(ListView):
     paginate_by = 10
     ordering = ['-posted_date']
 
+class ExamAttendClass(LoginRequiredMixin,UserPassesTestMixin, TemplateView):
+    model = ExamQuestion
+    template_name = 'job_seeker/'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        job_id = self.kwargs['pk']
+        job = Jobs.objects.get(id=job_id)
+        try:
+            context['questions'] = self.model.objects.filter(job=job)
+            return context
+        except self.model.DoesNotExist:
+            return None
+
+
+
 # ERROR PAGES - production
 def handler404(request, exception):
     return render(request,'error/404.html', status=404)
-
-
-
-
-
-
-
 
 # class EmployeeUpdateView(UpdateView):
     # template_name = 'template can be tha same as create template'

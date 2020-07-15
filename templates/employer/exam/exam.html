@@ -95,13 +95,19 @@
                 <div class="col-md-12">
                     {{ form.answer|attr:'class:form-control success'|attr:'placeholder:Answer'}}
                     <small class="text-danger">
-                        {{ form.type.errors }}
+                        {{ form.answer.errors }}
                     </small>
                 </div>
             </div>
             <button class="btn btn-primary mt-5">Add Question</button>
             <a href="{% url 'applicants' job.id %}" class="btn btn-danger mt-5">Finish</a>
         </form>
+    </div>
+
+    <div class="row " style="margin: 20px auto; width: 75%;">
+        <div class="col-md-12">
+            <a href="#" class="btn">View added questions</a>
+        </div>
     </div>
 
     <script src="{% static 'js/jquery.min.js' %} "></script><!-- JQUERY.MIN JS -->

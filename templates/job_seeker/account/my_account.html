@@ -39,15 +39,15 @@
       {% for job in applications %}
 
         <div class="job row">
-          <div class="job-title col-md-3">
+          <div class="job-title col-md-4">
             <span>Job title</span>
               <a href="{% url 'job-detail' job.jobs.id %}" class="text-capitalize"> <h3> {{ job.jobs.title }} </h3> </a>
           </div>
-          <div class="employer col-md-2">
+          <div class="employer col-md-3">
             <span>Posted by </span>
             <a href="{% url 'employer-detail' job.jobs.posted_by.id %}" class="text-capitalize"> <h3> {{ job.jobs.posted_by.user.first_name }} </h3> </a>
           </div>
-          <div class="date col-md-2">
+          <div class="date col-md-3">
             <span>Applied on</span>
             <h3> {{ job.applied_date|date:"F d, Y"}} </h3>
           </div>
@@ -59,16 +59,6 @@
                 <p class="text-danger font-weight-bold text-capitalize">closed</p>
               {% endif %}
             </div>
-
-          <div class="auto col-md-3">
-            {% if job.jobs.id in exams %}
-              <p>Exam is available</p>
-              {{ job.jobs.id }} {{ exams }}
-            {% else %}
-              <p> {{ job.jobs.id }} </p>
-              {{ exams }}
-            {% endif %}
-          </div>
         </div>
 
       {% endfor %}

@@ -113,7 +113,7 @@ class GetApplicants(LoginRequiredMixin, ListView):
         except Jobs.DoesNotExist:
             pass
         try:
-            applicants = self.model.objects.filter(jobs=job_id).filter(jobs__posted_by=self.request.user.employer)
+            applicants = self.model.objects.filter(jobs=job_id).filter(jobs__posted_by=self.request.user.employer).order_by('-applied_date')
             context['applicants'] = applicants
         except JobApplication.DoesNotExist:
             pass
