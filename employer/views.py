@@ -101,23 +101,34 @@ def view_applicants(request):
     return render(request, 'employer/account/view_jobs.html', context)
 
 class GetApplicants(LoginRequiredMixin, ListView):
+    # THIS VIEW RETURNS AN ERROR IF jobseeker IS ACCESSED ! FIX THIS ASAP
     model = JobApplication
     template_name = 'employer/account/view_applicants.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         job_id = self.kwargs['pk']
+
+        # try:
+        #     if self.request.user.jobseeker:
+        #         print('\n\n\nYou are seeking job\n\n\n')
+        #         return redirect('emp_view_profile')
+        # except:
+        #     pass
+
         try:
             job = Jobs.objects.values('title', 'id', 'is_opened').filter(posted_by = self.request.user.employer.id).get(id=job_id)
             context['job'] = job
         except Jobs.DoesNotExist:
             pass
+
         try:
             applicants = self.model.objects.filter(jobs=job_id).filter(jobs__posted_by=self.request.user.employer).order_by('-applied_date')
             context['applicants'] = applicants
         except JobApplication.DoesNotExist:
             pass
         return context
+
 
 
 
@@ -172,7 +183,7 @@ class EmployerDetailView(DetailView):
         employer_id = self.kwargs['pk']
         employer = Employer.objects.get(id= employer_id )
         context = super(EmployerDetailView, self).get_context_data(**kwargs)
-        context['job_count'] = Jobs.objects.all().filter(posted_by = employer).count()
+        context['job_count'] = Jobs.objects.all().filter(posted_by = employer, is_opened=True).count()
         return context
         
 class EmployerListView(ListView):
@@ -188,7 +199,7 @@ class JobsByEmployerView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         employer = get_object_or_404(Employer,id= self.kwargs['pk'])
-        context['object_list'] = self.model.objects.all().filter(posted_by = employer).order_by('-posted_date')
+        context['object_list'] = self.model.objects.all().filter(posted_by = employer, is_opened=True).order_by('-posted_date')
         return context
 
 

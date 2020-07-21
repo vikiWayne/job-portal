@@ -43,3 +43,10 @@ class ExamQuestion(models.Model):
     
     def __str__(self):
         return f'{ self.job.title } - Questions'
+
+class OpenedExams(models.Model):
+    job     = models.ForeignKey(Jobs, on_delete=models.CASCADE, related_name='openedExams')
+    is_open = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{ self.job.title } - { self.is_open }'

@@ -115,7 +115,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url 'viewExam' %}">
                 <i class="ni ni-single-copy-04 text-blue"></i>
                 <span class="nav-link-text">Exams </span>
               </a>
@@ -203,7 +203,7 @@
               <div class="card card-stats">
                 <!-- Card body -->
                 <div class="card-body">
-
+                <a href="{% url 'edit_profile' %}">
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Total Applications</h5>
@@ -215,6 +215,7 @@
                       </div>
                     </div>
                   </div>
+                </a>
                 </div>
               </div>
             </div>

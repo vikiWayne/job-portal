@@ -1,0 +1,56 @@
+{% extends 'job_seeker/account/base.html' %}
+
+{% block title %} 
+    View Exams
+{% endblock title %} 
+
+{% block stylesheet %}
+<style>
+  .job{
+    width: 100%;
+    background: #ffffff;
+    padding: 3%;
+    border-radius: 20px;
+    margin-bottom: 3%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    transform: scale(.95);
+    transition: all .5s;
+    box-shadow: 0px 0px 11px -8px rgba(0,0,0,0.75);
+
+  }
+  .job:hover{
+    transform: scale(1);
+    box-shadow: -2px 3px 23px -8px rgba(0,0,0,0.75);
+  }
+  .job-title h3{
+    color: #5E72E4 !important ;
+  }
+
+</style>
+{% endblock stylesheet %}
+
+
+{% block profile_content %}
+<div>
+    <h2 class="text-capitalize"> Available exams</h2>
+</div>
+
+{% for exam in examList %}
+<div class="job row">
+    <div class="job-title col-md-4">
+      <span>Job title</span>
+        <h3> {{ exam.job.title }}  </h3>
+    </div>
+    <div class="col-md-4 my-auto">
+        <a href="{% url 'attendExam' exam.job.id %}"  class="btn btn-success text-white">Attend exam</a>
+    </div>
+  </div>
+{% endfor %}
+
+
+{% endblock profile_content %}
+
+{% block script  %}
+{% endblock script  %}

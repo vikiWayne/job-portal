@@ -25,6 +25,7 @@ urlpatterns = [
     path('employers/', EmployerListView.as_view(), name='employers'),
     path('employer/<int:pk>/', EmployerDetailView.as_view(), name='employer-detail'),
     path('employer/<int:pk>/jobs/', JobsByEmployerView.as_view(), name='employer-jobs'),
+
 ]
 
 if settings.DEBUG:

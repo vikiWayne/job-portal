@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from employer.models import Employer
+from employer.models import Employer, ExamQuestion, OpenedExams, Jobs
 from job_seeker.models import User, JobSeeker, Resumes, Address
 
 
@@ -62,4 +62,17 @@ def save_address(sender, instance, **kwargs):
         instance.address.save()
 
 
+# Create status of exam in OpenedExams model when a Question is added to ExamQuestions model
 
+@receiver(post_save, sender=Jobs)
+def create_exam_status(sender, instance, created, **kwargs):
+    if created: 
+        OpenedExams.objects.create(job=instance)
+
+
+@receiver(post_save, sender=Jobs)
+def save_exam_status(sender, instance, **kwargs):
+    if instance.is_opened == False: # if job is closed, exam is open
+        instance.openedExams.update(is_open = True)
+    if instance.is_opened:
+        instance.openedExams.update(is_open = False)
