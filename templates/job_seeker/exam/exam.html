@@ -33,21 +33,60 @@
 
 
 {% block profile_content %}
+<div class="container">
 <div>
     <h2 class="text-capitalize"> Available exams</h2>
 </div>
+{% if examList %}
+  {% for exam in examList %}
+    <div class="job row">
+      <div class="job-title col-md-4">
+        <span>Job title</span>
+          <h3> {{ exam.job.title }}  </h3>
+      </div>
+      <div class="col-md-4 my-auto">
+          <a href="{% url 'attendExam' exam.job.id %}"  class="btn btn-success text-white">Attend exam</a> 
+      </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div style="padding: 15px;">
+      <h4 class="text-danger">No exams available</h4>
+    </div>
+{% endif %}
+</div>
 
-{% for exam in examList %}
-<div class="job row">
-    <div class="job-title col-md-4">
-      <span>Job title</span>
-        <h3> {{ exam.job.title }}  </h3>
-    </div>
-    <div class="col-md-4 my-auto">
-        <a href="{% url 'attendExam' exam.job.id %}"  class="btn btn-success text-white">Attend exam</a>
-    </div>
+{% if completedExams %}
+<div class="container">
+  <div>
+    <h2 class="text-capitalize"> Completed Exams </h2>
+    {% for exam in completedExams %}
+      <div class="job row">
+        <div class="job-title col-md-4">
+          <span>Job title</span>
+            <h3> {{ exam.job.title }}  </h3>
+        </div>
+        <div class="col-md-4 my-auto">
+            <p>Mark obtained - <span style="font-weight: bold; font-size: larger;">{{ exam.marks }}</span> </p>
+        </div>
+        {% if exam.marks >= 50 %}
+          <div class="col-md-4">
+              <p class="text-success font-weight-bold text-center">Congratulations ! <br />
+                <small class="text-success"> You are selected ! Wait for our call</small>
+              </p>
+          </div>
+        {% else %}
+          <div class="col-md-4">
+            <p class="text-danger font-weight-bold text-center">Oops ! <br />
+              <small class="text-danger"> You didn't score enough! </small>
+            </p>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
   </div>
-{% endfor %}
+</div>
+{% endif %}
 
 
 {% endblock profile_content %}

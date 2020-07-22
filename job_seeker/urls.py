@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('profile/exams/', views.ViewExams.as_view(), name='viewExam'),
     path('profile/exams/<int:pk>/', views.ExamAttendView.as_view(), name='attendExam'),
+    path('profile/exams/<int:pk>/sendresult/', views.SendExamResult.as_view(), name='sendResult'),
 
     path('profile/<int:pk>/', views.ProfileView.as_view(), name='profile'),
     path('edit/profile/', views.edit_profile, name='edit_profile'),

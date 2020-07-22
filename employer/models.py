@@ -47,6 +47,7 @@ class ExamQuestion(models.Model):
 class OpenedExams(models.Model):
     job     = models.ForeignKey(Jobs, on_delete=models.CASCADE, related_name='openedExams')
     is_open = models.BooleanField(default=False)
+    is_questions_finished = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{ self.job.title } - { self.is_open }'

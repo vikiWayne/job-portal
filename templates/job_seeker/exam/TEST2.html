@@ -1,0 +1,147 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<title>{{ title }} - Examination</title>
+	<style>
+		div#test{ border:#000 1px solid; padding:10px 40px 40px 40px; }
+	</style>
+</head>
+<body>
+
+	<div>
+		<div class="container-fluid bg-primary p-4 text-white" style="height: 65px; margin: 0 auto;">
+		 <div class="row container">
+			 <div class="col-md-6">
+				 <a href="{% url 'edit_profile' %}" class="text-white text-decoration-none">Back to Home</a>
+			 </div>
+		 </div>
+		</div>
+		 <div class="container">
+			 <h3 class="display-4 text-capitalize"> <span class="text-info"> {{ title }}</span> Questions</h3>
+		 </div>
+	</div>
+
+
+	<div class="container mt-5">
+		<div id="status">
+		</div>
+		<h2 id="test_status" class="mt-2"></h2>
+		<div id="test"></div>
+		<button id="send" onclick="sendResult()" class="btn btn-danger mt-2">Finish Exam</button>
+		
+	</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="{% static 'js/csrf.js' %}"></script>
+
+<script>
+	var pos = 0, test, test_status, question, choice, choices, chA, chB, chC, correct = 0, percentage =0;
+
+	var questions = [
+	{% for qs in object %}
+		[ "{{ qs.question }}", "{{ qs.option1 }} ", " {{ qs.option2 }}", " {{ qs.option3 }}", " {{ qs.answer }}" ],
+	{% endfor %}
+	];
+	
+
+	function _(x){
+		return document.getElementById(x);
+	}
+	function finishexam()
+	{
+		test.innerHTML = "<h2>You got "+correct+" of "+questions.length+" questions correct</h2>";
+		percentage = Math.round( (correct/questions.length)*100 );
+			_("test_status").innerHTML = "Test Completed";
+			// test.innerHTML += "<a href='#'>Re-test</a>";
+			// test.innerHTML += "<button>Done</button>";
+			return false;
+	}
+	
+	function renderQuestion(){
+		test = _("test");
+		if(pos >= questions.length){
+			test.innerHTML = "<h2>You got "+correct+" of "+questions.length+" questions correct</h2>";
+			_("test_status").innerHTML = "Test Completed";
+			//test.innerHTML += "<a href='#'>Re-test</a>";
+			test.innerHTML += "<button>Done</button>";
+			//pos = 0;
+			//correct = 0;
+			return false;
+		}
+		_("test_status").innerHTML = "<span style='font-size:22px'>Question: "+(pos+1)+" / "+questions.length+"</span>";
+		question = questions[pos][0];
+		chA = questions[pos][1];
+		chB = questions[pos][2];
+		chC = questions[pos][3];
+		// _('timeleft').innerHTML = ;
+		test.innerHTML = "<h3>"+question+"</h3>";
+		
+		test.innerHTML += "<input type='radio' name='choices' value='A'> "+chA+"<br>";
+		test.innerHTML += "<input type='radio' name='choices' value='B'> "+chB+"<br>";
+		test.innerHTML += "<input type='radio' name='choices' value='C'> "+chC+"<br><br>";
+		test.innerHTML += "<button onclick='checkAnswer()' class='btn btn-success'>Submit Answer</button>";
+
+
+	}
+
+	function checkAnswer(){
+		choices = document.getElementsByName("choices");
+		for(var i=0; i<choices.length; i++){
+			if(choices[i].checked){
+				choice = choices[i].value;
+			}
+		}
+		if(choice == questions[pos][4]){
+			correct++;
+		}
+		pos++;
+		renderQuestion();
+	}
+	window.addEventListener("load", renderQuestion, false);
+
+
+	function countDown(secs,elem) {
+		var element = document.getElementById(elem);
+		element.innerHTML = "<span>"+secs+" seconds remaining</span>";
+		if(secs < 1) 
+		{
+			clearTimeout(timer);
+			finishexam();
+			element.innerHTML = '<span>Countdown Complete!</span>';
+			// element.remove();
+			
+		}
+		secs--;
+		var timer = setTimeout('countDown('+secs+',"'+elem+'")',2000);
+	}
+
+	function sendResult () {
+		$.ajax({
+			type: 'POST',
+			url: 'sendresult/',
+			data: {
+				'job_id' : '{{ job.id }}',
+				'mark': percentage
+			},
+			success: function(data) {
+				if(data.success = true){
+					alert('Your exam completed successfully');
+				}
+			},
+			error: function(data){
+				alert("Faild to store marks");
+			}
+		});
+	}
+</script>
+<script>countDown(10,"status");</script>
+</body>
+</html>

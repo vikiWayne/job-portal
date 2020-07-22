@@ -64,11 +64,42 @@
 
 <div class="p-3">
     
+    {% if result %}
+    <div class="pb-5">
+        <div class="pt-2">
+            <h3>Exam Result</h3>
+            <small class="text-info">Candidates occupied more than 50% marks are listed Here</small>
+        </div>
+        {% for r in result %}
+            {% if r.job.posted_by == user.employer and r.marks >= 50 %}
+            <div class="row pb-2 w-100">
+                <div class="job-card">
+                    <div class="pic">
+                        <img src="{{ r.employee.profile_picture.url }}" alt="">
+                    </div>
+                    <div class="name">
+                        <h3> {{ r.employee.user.first_name }} </h3>
+                    </div>
+                   <div class="name">
+                       <span>Marks obtained</span>
+                       <h2>  {{ r.marks }} </h2>
+                   </div>
+                    <div class="profile">
+                        <h4><a href="mailto:{{ r.employee.user.email }}" target="_blank">send mail</a></h4>
+                    </div>
+                </div>
+            </div>  
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <div class="pb-3">
         <h3>Applicants for <span class="job-title">{{ job.title }}</span> </h3>
             <small>Total Applications Received - <span class="circle"> {{ applicants.count }}</span>
          </small>
     </div>
+
 
     {% if applicants %}
         {% for applicant in applicants %}
@@ -96,6 +127,9 @@
     </div>
     {% endif %}
 </div>
+
+
+
 
 
 

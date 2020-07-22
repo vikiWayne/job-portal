@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group
 
 from employer.models import Jobs,Employer, ExamQuestion, OpenedExams
 from job_seeker.forms import SignUpForm, CustomUserChangeForm, EditEmployeeForm, AddressForm, ResumeForm
-from job_seeker.models import JobApplication, JobSeeker
+from job_seeker.models import JobApplication, JobSeeker, ExamResult
 from job_seeker.decorators import unauthenticated_user, allowed_users
 
 def home(request):
@@ -164,7 +164,10 @@ class ViewExams(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = 'job_seeker/exam/exam.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        total_applications = JobApplication.objects.filter(user=self.request.user.jobseeker) 
+        total_applications = JobApplication.objects.filter(user=self.request.user.jobseeker,attend_exam=False)
+
+        context['completedExams'] = ExamResult.objects.filter(employee=self.request.user.jobseeker)
+
         availableExams = OpenedExams.objects.filter(is_open=True)
         exams= []
         context['total'] = total_applications
@@ -188,14 +191,18 @@ class ViewExams(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 class ExamAttendView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = ExamQuestion
-    template_name = 'job_seeker/exam/view_questions.html'
+    template_name = 'job_seeker/exam/TEST2.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         job = self.kwargs['pk']
         context['title'] = None
+        context['job'] = None
+        context['user'] = self.request.user.jobseeker
+
         try:
             title = Jobs.objects.filter(id=job)
             context['title'] = title[0].title
+            context['job'] = title[0]
         except Jobs.DoesNotExist:
             return redirect('viewExam')
         
@@ -214,6 +221,26 @@ class ExamAttendView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         except:
             return False
         return False
+
+class SendExamResult(LoginRequiredMixin, View):
+    model = ExamResult
+    def post(self, request, *args, **kwargs):
+        job_id = request.POST.get('job_id')
+        mark = request.POST.get('mark')
+        try:
+            job = Jobs.objects.get(id=job_id)
+            if job:
+                self.model.objects.create(employee=self.request.user.jobseeker, job=job, marks=mark)
+                application = JobApplication.objects.filter(user=self.request.user.jobseeker, jobs=job).first()
+                application.attend_exam = True
+                application.save()
+        except Jobs.DoesNotExist:
+            return HttpResponse(status=404)
+
+        return HttpResponse(status = 201)
+
+
+
 
 # ERROR PAGES - production
 def handler404(request, exception):

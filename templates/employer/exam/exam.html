@@ -100,7 +100,8 @@
                 </div>
             </div>
             <button class="btn btn-primary mt-5">Add Question</button>
-            <a href="{% url 'applicants' job.id %}" class="btn btn-danger mt-5">Finish</a>
+            <!-- <a href="{% url 'applicants' job.id %}" class="btn btn-danger mt-5">Finish</a> -->
+            <a href="#" id="finish" class="btn btn-danger mt-5">Finish</a>
         </form>
     </div>
 
@@ -109,9 +110,26 @@
             <a href="#" class="btn">View added questions</a>
         </div>
     </div>
-
     <script src="{% static 'js/jquery.min.js' %} "></script><!-- JQUERY.MIN JS -->
     <script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %} "></script><!-- BOOTSTRAP.MIN JS -->
-
+    <script src="{% static 'js/csrf.js' %}"></script>
+    <script>
+        $('#finish').click(function(e){
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: 'finish/',
+                data: {
+                    'job_id' : '{{ job.id }}'
+                },
+                success: function(data) {
+                    alert('exam finished')
+                },
+                error: function(){
+                    alert('error to finish')
+                }
+            });
+        })
+    </script>
 </body>
 </html>

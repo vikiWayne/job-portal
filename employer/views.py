@@ -10,8 +10,8 @@ from django.contrib.auth.models import Group
 
 
 from employer.forms import PostJobForm, EmployerRegistrationForm, ProfileUpadteForm, ExamCreateForm
-from employer.models import Employer, Jobs, ExamQuestion
-from job_seeker.models import User, JobApplication
+from employer.models import Employer, Jobs, ExamQuestion, OpenedExams
+from job_seeker.models import User, JobApplication, ExamResult
 from job_seeker.decorators import unauthenticated_user, allowed_users
 from job_seeker.forms import CustomUserChangeForm
 
@@ -109,17 +109,16 @@ class GetApplicants(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         job_id = self.kwargs['pk']
 
-        # try:
-        #     if self.request.user.jobseeker:
-        #         print('\n\n\nYou are seeking job\n\n\n')
-        #         return redirect('emp_view_profile')
-        # except:
-        #     pass
-
         try:
             job = Jobs.objects.values('title', 'id', 'is_opened').filter(posted_by = self.request.user.employer.id).get(id=job_id)
             context['job'] = job
         except Jobs.DoesNotExist:
+            pass
+
+        try:
+            applied_job = Jobs.objects.get(id=job_id)
+            context['result'] = ExamResult.objects.filter(job=applied_job).order_by('-marks')
+        except:
             pass
 
         try:
@@ -229,3 +228,16 @@ def ExamCreateView(request, job_id):
         'count' : count+1
     }
     return render(request, 'employer/exam/exam.html', context)
+
+class FinishExam(LoginRequiredMixin, View):
+    model = OpenedExams
+    def post(self, request, *args, **kwargs):
+        job_id = request.POST.get('job_id')
+        try:
+            job = Jobs.objects.get(id=job_id)
+        except:
+            pass
+        exam = OpenedExams.objects.get(job=job)
+        exam.is_questions_finished = True
+        exam.save()
+        return HttpResponse(status = 200)

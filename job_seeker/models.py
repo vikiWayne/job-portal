@@ -81,6 +81,7 @@ class JobApplication(models.Model):
     user = models.ForeignKey(JobSeeker, on_delete=models.CASCADE, related_name='jobapplication')
     jobs = models.ForeignKey(Jobs, on_delete=models.CASCADE, related_name='jobapplication')
     applied_date = models.DateTimeField(default=timezone.now)
+    attend_exam = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{ self.user.user.first_name } - { self.jobs.title }- Applications'
