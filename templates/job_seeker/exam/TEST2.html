@@ -15,7 +15,6 @@
 	</style>
 </head>
 <body>
-
 	<div>
 		<div class="container-fluid bg-primary p-4 text-white" style="height: 65px; margin: 0 auto;">
 		 <div class="row container">
@@ -47,7 +46,7 @@
 
 	var questions = [
 	{% for qs in object %}
-		[ "{{ qs.question }}", "{{ qs.option1 }} ", " {{ qs.option2 }}", " {{ qs.option3 }}", " {{ qs.answer }}" ],
+		[ "{{ qs.question }}", "{{ qs.option1 }}", "{{ qs.option2 }}", "{{ qs.option3 }}", "{{ qs.answer }}" ],
 	{% endfor %}
 	];
 	
@@ -60,8 +59,6 @@
 		test.innerHTML = "<h2>You got "+correct+" of "+questions.length+" questions correct</h2>";
 		percentage = Math.round( (correct/questions.length)*100 );
 			_("test_status").innerHTML = "Test Completed";
-			// test.innerHTML += "<a href='#'>Re-test</a>";
-			// test.innerHTML += "<button>Done</button>";
 			return false;
 	}
 	
@@ -70,7 +67,6 @@
 		if(pos >= questions.length){
 			test.innerHTML = "<h2>You got "+correct+" of "+questions.length+" questions correct</h2>";
 			_("test_status").innerHTML = "Test Completed";
-			//test.innerHTML += "<a href='#'>Re-test</a>";
 			test.innerHTML += "<button>Done</button>";
 			//pos = 0;
 			//correct = 0;
@@ -84,9 +80,9 @@
 		// _('timeleft').innerHTML = ;
 		test.innerHTML = "<h3>"+question+"</h3>";
 		
-		test.innerHTML += "<input type='radio' name='choices' value='A'> "+chA+"<br>";
-		test.innerHTML += "<input type='radio' name='choices' value='B'> "+chB+"<br>";
-		test.innerHTML += "<input type='radio' name='choices' value='C'> "+chC+"<br><br>";
+		test.innerHTML += "<input type='radio' name='choices' value='"+chA+"'> "+chA+"<br>";
+		test.innerHTML += "<input type='radio' name='choices' value='"+chB+"'> "+chB+"<br>";
+		test.innerHTML += "<input type='radio' name='choices' value='"+chC+"'> "+chC+"<br><br>";
 		test.innerHTML += "<button onclick='checkAnswer()' class='btn btn-success'>Submit Answer</button>";
 
 
@@ -99,9 +95,10 @@
 				choice = choices[i].value;
 			}
 		}
-		if(choice == questions[pos][4]){
+		if(choice == questions[pos][4]) {
 			correct++;
 		}
+		console.log(questions)
 		pos++;
 		renderQuestion();
 	}

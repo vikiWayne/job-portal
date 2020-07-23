@@ -3,11 +3,11 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Store resume in a variable
-resume = docx2txt.process("C:/Users/vaisa/Documents/vaisakhCV.docx")
+# resume = docx2txt.process("C:/Users/agent007/Documents/Batman.docx")
 
 # # print(resume)
 
-job_descriptoin = "React Python (Django, Flask) Android C Programming C++ Programming MySQL SQLite HTML CSS Bootstrap JavaScript jQuery MS Office tools"
+# job_descriptoin = "React Python (Django, Flask) Android C Programming C++ Programming MySQL SQLite HTML CSS Bootstrap JavaScript jQuery MS Office tools"
 
 # # A list of text
 # text = [ resume, job_descriptoin ]
@@ -34,4 +34,4 @@ def matchResume(linkToResume, jobDescription):
     matchPercentage = round(matchPercentage, 2) 
     return str(matchPercentage)
 
-print(matchResume("C:/Users/vaisa/Documents/vaisakhCV.docx", job_descriptoin))
+# print(matchResume("C:/Users/vaisa/Documents/vaisakhCV.docx", job_descriptoin))

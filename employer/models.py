@@ -38,7 +38,7 @@ class ExamQuestion(models.Model):
     option1     = models.CharField(max_length=50)
     option2     = models.CharField(max_length=50)
     option3     = models.CharField(max_length=50)
-    option4     = models.CharField(max_length=50)
+    # option4     = models.CharField(max_length=50)
     answer      = models.CharField(max_length=50)
     
     def __str__(self):

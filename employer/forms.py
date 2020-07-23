@@ -31,4 +31,4 @@ class ProfileUpadteForm(ModelForm):
 class ExamCreateForm(ModelForm):
     class Meta:
         model = ExamQuestion
-        fields =  ['question', 'option1','option2','option3','option4', 'answer']
+        fields =  ['question', 'option1','option2','option3', 'answer']

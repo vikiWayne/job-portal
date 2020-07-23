@@ -103,20 +103,22 @@
 
     {% if applicants %}
         {% for applicant in applicants %}
-        <div class="row pb-2 w-100">
-            <div class="job-card">
-                <div class="pic">
-                    <img src="{{ applicant.user.profile_picture.url }}" alt="">
-                </div>
+        <div class="row pb-2 w-100 text-center">
+            <div class="col-md-12">
+                <div class="job-card w-100">
+                    <div class="pic">
+                        <img src="{{ applicant.user.profile_picture.url }}" alt="">
+                    </div>
+                    <div class="name">
+                        <h3> {{ applicant.user.user.first_name }} </h3>
+                    </div>
                 <div class="name">
-                    <h3> {{ applicant.user.user.first_name }} </h3>
+                    <span>Applied on</span>
+                    <h4>  {{ applicant.applied_date|date:"d M Y " }} </h4>
                 </div>
-               <div class="name">
-                   <span>Applied on</span>
-                   <h4>  {{ applicant.applied_date|date:"d M Y " }} </h4>
-               </div>
-                <div class="profile">
-                    <h4><a href="{% url 'profile' applicant.user.id %}" target="_blank"> view Profile</a></h4>
+                    <div class="profile">
+                        <h4><a href="{% url 'profile' applicant.user.id %}" target="_blank"> view Profile</a></h4>
+                    </div>
                 </div>
             </div>
         </div>  

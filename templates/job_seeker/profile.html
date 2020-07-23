@@ -107,7 +107,7 @@
 							<p class="mb-2">Contact: <span class="text-dark"> <a href="tel:"> {{ object.user.phone }} </a>  </span></p>
 						</div>
 					</div>
-					<a href="#" class="btn btn-default mr-3"><i class="fa fa-file-download"> </i> Download CV</a>
+					<a href="{{ object.user.jobseeker.resumes.resume.url }}" class="btn btn-default mr-3"><i class="fa fa-file-download"> </i> Download CV</a> 
 					<a href="{% url 'home' %}" class="btn btn-default mr-3"> <i class="fa fa-arrow-left"> </i> Back to home</a>
 
 				</div>

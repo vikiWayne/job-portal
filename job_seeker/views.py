@@ -33,9 +33,12 @@ def register(request):
             #uploading resume
             userResume = Resumes.objects.get(jobseeker=user.jobseeker)
             print('\n\nUserResume',userResume,'\n\n resume', userResume.jobseeker)
-            upload = request.FILES.get('resume')
-            userResume.resume = upload
-            userResume.save()
+            try:
+                upload = request.FILES.get('resume')
+                userResume.resume = upload
+                userResume.save()
+            except:
+                pass
 
             group = Group.objects.get(name = 'employee')
             user.groups.add(group)
@@ -207,13 +210,23 @@ class ExamAttendView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         job = self.kwargs['pk']
         context['title'] = None
         context['job'] = None
-        context['user'] = self.request.user.jobseeker
+        rUser = self.request.user.jobseeker
+        context['user'] = rUser
+        eJob = Jobs.objects.get(id=job)
+        print('\n\n',eJob)
 
         try:
-            title = Jobs.objects.filter(id=job)
-            context['title'] = title[0].title
-            context['job'] = title[0]
-        except Jobs.DoesNotExist:
+            canAttend = JobApplication.objects.filter(user=rUser,jobs=eJob).first()
+            if canAttend.attend_exam == True:
+                pass
+        except:
+            pass        
+
+        try:
+            title = eJob
+            context['title'] = title.title
+            context['job'] = title
+        except eJob.DoesNotExist:
             return redirect('viewExam')
         
         context['object'] = None

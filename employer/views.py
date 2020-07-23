@@ -1,3 +1,6 @@
+import os
+from django.conf import settings
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -14,6 +17,8 @@ from employer.models import Employer, Jobs, ExamQuestion, OpenedExams
 from job_seeker.models import User, JobApplication, ExamResult
 from job_seeker.decorators import unauthenticated_user, allowed_users
 from job_seeker.forms import CustomUserChangeForm
+
+from job_seeker.docScanner import matchResume
 
 @unauthenticated_user
 def RegisterEmployerView(request):
@@ -108,7 +113,7 @@ class GetApplicants(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         job_id = self.kwargs['pk']
-
+        
         try:
             job = Jobs.objects.values('title', 'id', 'is_opened').filter(posted_by = self.request.user.employer.id).get(id=job_id)
             context['job'] = job
@@ -159,8 +164,15 @@ class JobDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(JobDetailView, self).get_context_data(**kwargs)
         job_id = self.kwargs['pk']
+        resume = self.request.user.jobseeker.resumes.resume.url
+
+        path = str(settings.BASE_DIR+resume)
+        absUrl = path.replace("\\","/")
+        absUrl = absUrl.replace("job_portal","")
+
         try:
             job = self.model.objects.get(id=job_id)
+            description = job.description
         except Jobs.DoesNotExist:
             pass
 
@@ -170,7 +182,8 @@ class JobDetailView(DetailView):
                 context['applied_job'] = applied_job.jobs
             except JobApplication.DoesNotExist:
                 pass
-
+        
+        context['matchPercentage'] = matchResume(absUrl, description)
         context['object'] = job
         return context
 
