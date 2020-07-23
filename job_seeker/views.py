@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group
 
 from employer.models import Jobs,Employer, ExamQuestion, OpenedExams
 from job_seeker.forms import SignUpForm, CustomUserChangeForm, EditEmployeeForm, AddressForm, ResumeForm
-from job_seeker.models import JobApplication, JobSeeker, ExamResult
+from job_seeker.models import JobApplication, JobSeeker, ExamResult, Resumes
 from job_seeker.decorators import unauthenticated_user, allowed_users
 
 def home(request):
@@ -25,18 +25,28 @@ def home(request):
 def register(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
-        if form.is_valid():
+        form2 = ResumeForm(request.POST, request.FILES)
+        if form.is_valid() and form2.is_valid():
             user = form.save(commit = False)
             user.save()
             
+            #uploading resume
+            userResume = Resumes.objects.get(jobseeker=user.jobseeker)
+            print('\n\nUserResume',userResume,'\n\n resume', userResume.jobseeker)
+            upload = request.FILES.get('resume')
+            userResume.resume = upload
+            userResume.save()
+
             group = Group.objects.get(name = 'employee')
             user.groups.add(group)
             
             return redirect('login')
     else:
         form = SignUpForm()
+        form2 = ResumeForm()
     context = {
-        'form' : form
+        'form' : form,
+        'form2': form2
     }
     return render(request, 'job_seeker/signup.html', context)
 

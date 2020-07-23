@@ -15,7 +15,7 @@ urlpatterns = [
     path('login/', auth_view.LoginView.as_view(template_name='job_seeker/login.html', redirect_authenticated_user=True, authentication_form=CustomAuthenticationForm), name='login'),
     path('logout/', auth_view.LogoutView.as_view(template_name = 'job_seeker/logout.html'), name='logout'),
     path('sign-up/', job_seeker_views.register, name='register'),
-    path('social-auth/', include('social_django.urls', namespace='social')),
+    # path('social-auth/', include('social_django.urls', namespace='social')),
 
     path('job/<int:pk>/', JobDetailView.as_view(), name='job-detail'),
     path('job/<int:pk>/apply/', job_seeker_views.JobApplyView.as_view()),
