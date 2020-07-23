@@ -29,7 +29,11 @@
                                             <li><i class="ti-location-pin"></i><strong class="font-weight-700 text-black">{{object.location}}</strong><span class="text-black-light"> </span></li>
                                             <li><i class="ti-money"></i><strong class="font-weight-700 text-black">Salary</strong> {% if object.salary == '0.00' %} Not Disclosed {% else %} {{object.salary}} {% endif %} </li>
                                             <li><i class="ti-shield"></i><strong class="font-weight-700 text-black">Experience</strong> {% if object.experience == 0 %} Fresher  {% else %} {{object.experience}} Year Experience {% endif %} </li>
-                                            <li class="bg-info text-white rounded text-center" style="padding: 10px"> Profile matched - {{ matchPercentage }}%</li>
+                                            {% if matchPercentage >= 50 %}
+                                                <li class="text-white rounded text-center" style="padding: 10px; background-color: #17b85c;"> Resume matched - {{ matchPercentage }}%</li>
+                                            {% else %}
+                                                <li class="text-white rounded text-center" style="padding: 10px; background-color: #ce3741;"> Resume matched - {{ matchPercentage }}%</li>
+                                            {% endif %}
                                         </ul>
                                         
                                         {% if object.posted_by == user.employer %}
@@ -47,7 +51,7 @@
                     <div class="col-lg-8">
                         <div class="job-info-box">
                             <h3 class="m-t0 m-b10 font-weight-700 title-head">
-                                <p class="text-primary m-r30">{{ object.title }}</p>  <small class="text-capitalize text-muted" style="font-size: 18px;"> ({{ object.type }}) </small class="text-capitalize">
+                                <p class="text-primary m-r30 text-capitalize">{{ object.title }}</p>  <small class="text-capitalize text-muted" style="font-size: 18px;"> ({{ object.type }}) </small class="text-capitalize">
                             </h3>
                             <ul class="job-info">
                                 <li><strong>Posted on - </strong> {{ object.posted_date|date:"M d Y" }}</li>
@@ -70,7 +74,14 @@
                                         {% if object == applied_job%}
                                             <button class="site-button" id="cancel" data-id="{{ object.id }}" style="background: #f30541 !important;">Cancel Application</button>
                                         {% else %}
-                                            <button class="site-button" id="apply" data-id="{{ object.id }}">Apply This Job</button>
+                                            {% if matchPercentage >= 50  %}
+                                                <button class="site-button" id="apply" data-id="{{ object.id }}">Apply This Job</button>
+                                            {% else %}
+                                                <div class="rounded text-danger text-center">
+                                                    <p>You are ineligible for this job !</p>
+                                                    <small class="text-info"> You can only apply to the jobs which are <b>More than 50% match to your Resume !</b> </small>
+                                                </div>
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 {% else %}

@@ -183,7 +183,7 @@ class JobDetailView(DetailView):
             except JobApplication.DoesNotExist:
                 pass
         
-        context['matchPercentage'] = matchResume(absUrl, description)
+        context['matchPercentage'] = round(float(matchResume(absUrl, description)), 0)
         context['object'] = job
         return context
 
