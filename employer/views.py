@@ -115,7 +115,8 @@ class GetApplicants(LoginRequiredMixin, ListView):
         job_id = self.kwargs['pk']
         
         try:
-            job = Jobs.objects.values('title', 'id', 'is_opened').filter(posted_by = self.request.user.employer.id).get(id=job_id)
+            job = Jobs.objects.filter(posted_by = self.request.user.employer.id, id=job_id).first()
+            context['is_finish'] = OpenedExams.objects.values('is_questions_finished').get(job=job)
             context['job'] = job
         except Jobs.DoesNotExist:
             pass
@@ -164,12 +165,7 @@ class JobDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(JobDetailView, self).get_context_data(**kwargs)
         job_id = self.kwargs['pk']
-        resume = self.request.user.jobseeker.resumes.resume.url
-
-        path = str(settings.BASE_DIR+resume)
-        absUrl = path.replace("\\","/")
-        absUrl = absUrl.replace("job_portal","")
-
+    
         try:
             job = self.model.objects.get(id=job_id)
             description = job.description
@@ -182,8 +178,12 @@ class JobDetailView(DetailView):
                 context['applied_job'] = applied_job.jobs
             except JobApplication.DoesNotExist:
                 pass
-        
-        context['matchPercentage'] = round(float(matchResume(absUrl, description)), 0)
+            resume = self.request.user.jobseeker.resumes.resume.url
+            path = str(settings.BASE_DIR+resume)
+            absUrl = path.replace("\\","/")
+            absUrl = absUrl.replace("job_portal","")
+            context['matchPercentage'] = round(float(matchResume(absUrl, description)), 0)
+            
         context['object'] = job
         return context
 

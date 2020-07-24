@@ -15,6 +15,7 @@
 	</style>
 </head>
 <body>
+	{% if object %}
 	<div>
 		<div class="container-fluid bg-primary p-4 text-white" style="height: 65px; margin: 0 auto;">
 		 <div class="row container">
@@ -37,7 +38,11 @@
 		<button id="send" onclick="sendResult()" class="btn btn-danger mt-2">Finish Exam</button>
 		
 	</div>
-
+	{% else %}
+		<div class="bg-warning text-dark text-center">
+			<p class="display-3">Oops! Questions are <span class="text-white">unavailable!</span> </p>
+		</div>
+	{% endif %}
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="{% static 'js/csrf.js' %}"></script>
 
@@ -57,17 +62,21 @@
 	function finishexam()
 	{
 		test.innerHTML = "<h2>You got "+correct+" of "+questions.length+" questions correct</h2>";
-		percentage = Math.round( (correct/questions.length)*100 );
-			_("test_status").innerHTML = "Test Completed";
-			return false;
+		_("test_status").innerHTML = "Test Completed ";
+		return false;
 	}
 	
+	function calcPercentage() {
+		percentage = Math.round( (correct/questions.length)*100 );
+		console.log('per%',percentage)
+		return false;
+	}
 	function renderQuestion(){
 		test = _("test");
 		if(pos >= questions.length){
 			test.innerHTML = "<h2>You got "+correct+" of "+questions.length+" questions correct</h2>";
 			_("test_status").innerHTML = "Test Completed";
-			test.innerHTML += "<button>Done</button>";
+			// test.innerHTML += "<button>Done</button>";
 			//pos = 0;
 			//correct = 0;
 			return false;
@@ -98,7 +107,6 @@
 		if(choice == questions[pos][4]) {
 			correct++;
 		}
-		console.log(questions)
 		pos++;
 		renderQuestion();
 	}
@@ -121,6 +129,8 @@
 	}
 
 	function sendResult () {
+		calcPercentage();
+		console.log('per',percentage);
 		$.ajax({
 			type: 'POST',
 			url: 'sendresult/',
@@ -134,7 +144,7 @@
 				}
 			},
 			error: function(data){
-				alert("Faild to store marks");
+				alert("Faild to store marks", percentage );
 			}
 		});
 	}

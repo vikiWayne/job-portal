@@ -57,8 +57,14 @@
         <a href="{% url 'job_update' job.id %}" class="btn btn-danger text-uppercase" id="close_job"> close this job </a>
         <small>Close this job to create exam</small>
     {% else %}
-        <a href="{% url 'exam' job.id %}" class="btn btn-success text-capitalize" id="close_job">Create Exam</a>
-        <small class="text-danger">Job is closed</small>
+        <div class="container mt-4">
+            {% if not is_finish.is_questions_finished %}
+                <a href="{% url 'exam' job.id %}" class="btn btn-success text-capitalize" id="close_job">Create Exam</a>
+            {% else %}
+                <p class="text-success font-weight-normal">Exam is Created </p>
+            {% endif %}
+            <small class="text-danger">Job is closed</small>
+        </div>
     {% endif %}
 </div>
 
@@ -72,8 +78,8 @@
         </div>
         {% for r in result %}
             {% if r.job.posted_by == user.employer and r.marks >= 50 %}
-            <div class="row pb-2 w-100">
-                <div class="job-card">
+            <div class="row pb-2 w-100 text-center">
+                <div class="job-card w-100">
                     <div class="pic">
                         <img src="{{ r.employee.profile_picture.url }}" alt="">
                     </div>
@@ -82,7 +88,7 @@
                     </div>
                    <div class="name">
                        <span>Marks obtained</span>
-                       <h2>  {{ r.marks }} </h2>
+                       <h2>  {{ r.marks }}%</h2>
                    </div>
                     <div class="profile">
                         <h4><a href="mailto:{{ r.employee.user.email }}" target="_blank">send mail</a></h4>

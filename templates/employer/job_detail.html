@@ -29,10 +29,12 @@
                                             <li><i class="ti-location-pin"></i><strong class="font-weight-700 text-black">{{object.location}}</strong><span class="text-black-light"> </span></li>
                                             <li><i class="ti-money"></i><strong class="font-weight-700 text-black">Salary</strong> {% if object.salary == '0.00' %} Not Disclosed {% else %} {{object.salary}} {% endif %} </li>
                                             <li><i class="ti-shield"></i><strong class="font-weight-700 text-black">Experience</strong> {% if object.experience == 0 %} Fresher  {% else %} {{object.experience}} Year Experience {% endif %} </li>
-                                            {% if matchPercentage >= 50 %}
-                                                <li class="text-white rounded text-center" style="padding: 10px; background-color: #17b85c;"> Resume matched - {{ matchPercentage }}%</li>
-                                            {% else %}
-                                                <li class="text-white rounded text-center" style="padding: 10px; background-color: #ce3741;"> Resume matched - {{ matchPercentage }}%</li>
+                                            {% if user.is_authenticated  %}
+                                                {% if matchPercentage >= 50 %}
+                                                    <li class="text-white rounded text-center" style="padding: 10px; background-color: #17b85c;"> Resume matched - {{ matchPercentage }}%</li>
+                                                {% else %}
+                                                    <li class="text-white rounded text-center" style="padding: 10px; background-color: #ce3741;"> Resume matched - {{ matchPercentage }}%</li>
+                                                {% endif %}
                                             {% endif %}
                                         </ul>
                                         

@@ -205,6 +205,7 @@ class ViewExams(LoginRequiredMixin, UserPassesTestMixin, ListView):
 class ExamAttendView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = ExamQuestion
     template_name = 'job_seeker/exam/TEST2.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         job = self.kwargs['pk']
@@ -212,22 +213,22 @@ class ExamAttendView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         context['job'] = None
         rUser = self.request.user.jobseeker
         context['user'] = rUser
-        eJob = Jobs.objects.get(id=job)
-        print('\n\n',eJob)
+
+        try:
+            eJob = Jobs.objects.get(id=job)
+            title = eJob
+            context['title'] = title.title
+            context['job'] = title
+        except Jobs.DoesNotExist:
+            pass
 
         try:
             canAttend = JobApplication.objects.filter(user=rUser,jobs=eJob).first()
             if canAttend.attend_exam == True:
-                pass
+                return None
+                # print('\n\n user is alredy attended the exam')
         except:
             pass        
-
-        try:
-            title = eJob
-            context['title'] = title.title
-            context['job'] = title
-        except eJob.DoesNotExist:
-            return redirect('viewExam')
         
         context['object'] = None
 

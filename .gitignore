@@ -5,6 +5,7 @@ job_env
 .DS_Store
 *.sqlite3
 *.env
+*.docx
 media/employees
 media/resumes
 # Accept these files in the repository
